@@ -89,6 +89,23 @@ export async function getPinnedAnnouncements() {
   return data;
 }
 
+export async function getRecentPostsByCategory(limit = 50) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*, profiles(*), categories(*)")
+    .is("group_id", null)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Failed to fetch recent posts:", error.message);
+    return [];
+  }
+  return data;
+}
+
 export async function getPost(id: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
