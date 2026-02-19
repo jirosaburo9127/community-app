@@ -11,11 +11,9 @@ import { ja } from "date-fns/locale";
 export function PostCard({
   post,
   reactions,
-  coloredBg,
 }: {
   post: Post;
   reactions?: ReactionCount[];
-  coloredBg?: boolean;
 }) {
   const timeAgo = formatDistanceToNow(new Date(post.created_at), {
     addSuffix: true,
@@ -27,12 +25,7 @@ export function PostCard({
   return (
     <Link
       href={`/posts/${post.id}`}
-      className={cn(
-        "mb-4 block break-inside-avoid overflow-hidden rounded-xl transition-all hover:-translate-y-0.5",
-        coloredBg
-          ? cn(catColor.bg, "border border-transparent hover:shadow-lg hover:shadow-gray-200/50")
-          : "bg-white border border-border hover:shadow-lg hover:shadow-gray-200/50"
-      )}
+      className="mb-4 block break-inside-avoid overflow-hidden rounded-xl bg-white border border-border transition-all hover:shadow-lg hover:shadow-gray-200/50 hover:-translate-y-0.5"
     >
       {post.image_urls?.[0] ? (
         <div className="relative aspect-video w-full overflow-hidden">
@@ -44,20 +37,17 @@ export function PostCard({
             sizes="(max-width: 640px) 50vw, 33vw"
           />
         </div>
-      ) : coloredBg ? null : (
+      ) : (
         <div className={cn("h-1.5 bg-gradient-to-r", catColor.gradient)} />
       )}
       <div className="p-3.5">
-        {!coloredBg && post.categories && (
+        {post.categories && (
           <span className={cn("mb-1.5 inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium", catColor.bg, catColor.text)}>
             <span>{post.categories.icon_emoji}</span>
             {post.categories.name}
           </span>
         )}
-        <h3 className={cn(
-          "mb-1 text-sm font-bold leading-snug line-clamp-2",
-          coloredBg ? catColor.text : "text-gray-900"
-        )}>
+        <h3 className="mb-1 text-sm font-bold leading-snug text-gray-900 line-clamp-2">
           {post.title}
         </h3>
         <p className="mb-2.5 text-xs leading-relaxed text-gray-500 line-clamp-2">{post.body}</p>
@@ -71,9 +61,7 @@ export function PostCard({
                   "inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[10px]",
                   r.reacted
                     ? "border-primary/30 bg-primary/8 text-primary"
-                    : coloredBg
-                      ? "border-white/60 bg-white/50 text-gray-600"
-                      : "border-gray-100 bg-gray-50 text-gray-500"
+                    : "border-gray-100 bg-gray-50 text-gray-500"
                 )}
               >
                 {r.emoji} {r.count}

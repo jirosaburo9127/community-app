@@ -18,7 +18,7 @@ export function CategorySection({
   const color = getCategoryColor(category.slug);
 
   return (
-    <section className="mb-6">
+    <section className={cn("rounded-2xl p-4", color.bg)}>
       {/* カテゴリ見出し */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -29,7 +29,7 @@ export function CategorySection({
             )}
           />
           <span className="text-lg">{category.icon_emoji}</span>
-          <h2 className="text-base font-bold text-gray-900">
+          <h2 className={cn("text-base font-bold", color.text)}>
             {category.name}
           </h2>
           <span className="text-xs text-muted">({posts.length})</span>
@@ -53,7 +53,7 @@ export function CategorySection({
             key={post.id}
             className="w-[260px] flex-shrink-0 snap-start sm:w-[280px]"
           >
-            <PostCard post={post} reactions={reactionsMap.get(post.id)} coloredBg />
+            <PostCard post={post} reactions={reactionsMap.get(post.id)} />
           </div>
         ))}
       </div>
