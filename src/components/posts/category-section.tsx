@@ -53,7 +53,7 @@ export function CategorySection({
             key={post.id}
             className="w-[260px] flex-shrink-0 snap-start sm:w-[280px]"
           >
-            <PostCard post={post} reactions={reactionsMap.get(post.id)} />
+            <PostCard post={post} reactions={reactionsMap.get(post.id)} coloredBg />
           </div>
         ))}
       </div>
