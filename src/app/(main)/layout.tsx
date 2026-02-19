@@ -7,6 +7,8 @@ import { getUnreadNotificationCount } from "@/lib/queries/notifications";
 import { getUnreadMessageCount } from "@/lib/queries/messages";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default async function MainLayout({
   children,
 }: {
