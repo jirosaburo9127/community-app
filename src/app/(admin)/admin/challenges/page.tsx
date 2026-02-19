@@ -24,7 +24,6 @@ type ChallengeRow = Challenge & {
 export default function AdminChallengesPage() {
   const [challenges, setChallenges] = useState<ChallengeRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchChallenges();
@@ -32,6 +31,7 @@ export default function AdminChallengesPage() {
 
   async function fetchChallenges() {
     setLoading(true);
+    const supabase = createClient();
     const { data } = await supabase
       .from("challenges")
       .select("*, profiles(display_name)")
@@ -41,6 +41,7 @@ export default function AdminChallengesPage() {
   }
 
   async function toggleStatus(id: string, currentStatus: string) {
+    const supabase = createClient();
     const newStatus = currentStatus === "open" ? "closed" : "open";
     const { error } = await supabase
       .from("challenges")
@@ -57,6 +58,7 @@ export default function AdminChallengesPage() {
 
   async function deleteChallenge(id: string) {
     if (!confirm("このチャレンジを削除しますか？")) return;
+    const supabase = createClient();
     const { error } = await supabase.from("challenges").delete().eq("id", id);
     if (!error) {
       setChallenges((prev) => prev.filter((c) => c.id !== id));

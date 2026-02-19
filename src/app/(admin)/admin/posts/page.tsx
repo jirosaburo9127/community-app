@@ -11,7 +11,6 @@ export default function AdminPostsPage() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchData();
@@ -19,6 +18,7 @@ export default function AdminPostsPage() {
 
   async function fetchData() {
     setLoading(true);
+    const supabase = createClient();
     const [{ data: postsData }, { data: cats }] = await Promise.all([
       supabase
         .from("posts")
@@ -33,6 +33,7 @@ export default function AdminPostsPage() {
 
   async function deletePost(postId: string) {
     if (!confirm("この投稿を削除しますか？")) return;
+    const supabase = createClient();
     const { error } = await supabase.from("posts").delete().eq("id", postId);
     if (!error) {
       setPosts((prev) => prev.filter((p) => p.id !== postId));
@@ -40,6 +41,7 @@ export default function AdminPostsPage() {
   }
 
   async function togglePin(postId: string, currentValue: boolean) {
+    const supabase = createClient();
     const { error } = await supabase
       .from("posts")
       .update({ is_pinned: !currentValue })

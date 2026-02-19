@@ -17,7 +17,6 @@ type EventRow = {
 export default function AdminEventsPage() {
   const [events, setEvents] = useState<EventRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchEvents();
@@ -25,6 +24,7 @@ export default function AdminEventsPage() {
 
   async function fetchEvents() {
     setLoading(true);
+    const supabase = createClient();
     const { data } = await supabase
       .from("events")
       .select("id, title, event_date, capacity, organizer_id, profiles(display_name)")
@@ -48,6 +48,7 @@ export default function AdminEventsPage() {
 
   async function deleteEvent(eventId: string) {
     if (!confirm("このイベントを削除しますか？")) return;
+    const supabase = createClient();
     const { error } = await supabase.from("events").delete().eq("id", eventId);
     if (!error) {
       setEvents((prev) => prev.filter((e) => e.id !== eventId));

@@ -16,7 +16,6 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState<Profile[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     fetchUsers();
@@ -24,6 +23,7 @@ export default function AdminUsersPage() {
 
   async function fetchUsers() {
     setLoading(true);
+    const supabase = createClient();
     const { data } = await supabase
       .from("profiles")
       .select("*")
@@ -33,6 +33,7 @@ export default function AdminUsersPage() {
   }
 
   async function toggleAdmin(userId: string, currentValue: boolean) {
+    const supabase = createClient()
     const { error } = await supabase
       .from("profiles")
       .update({ is_admin: !currentValue })
@@ -45,6 +46,7 @@ export default function AdminUsersPage() {
   }
 
   async function changeRole(userId: string, newRole: string) {
+    const supabase = createClient();
     const { error } = await supabase
       .from("profiles")
       .update({ role: newRole })
