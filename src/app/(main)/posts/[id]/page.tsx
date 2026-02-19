@@ -94,7 +94,7 @@ export default async function PostDetailPage({
         </div>
       </article>
 
-      <section className="mt-4 overflow-hidden rounded-xl border border-border bg-white p-6">
+      <section className="mt-4 rounded-xl border border-border bg-white p-4 sm:p-6">
         <h2 className="mb-4 flex items-center gap-1.5 text-base font-bold text-gray-900">
           <MessageCircle size={18} className="text-primary" />
           コメント ({comments.length})
