@@ -66,7 +66,7 @@ export async function updateSession(request: NextRequest) {
     if (needsAdminCheck || needsOnboardingCheck) {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("is_admin, onboarding_completed, display_name")
+        .select("is_admin, onboarding_completed")
         .eq("id", user.id)
         .single();
 
@@ -84,10 +84,6 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url);
       }
 
-      // レイアウトで再クエリしなくて済むようヘッダーで渡す
-      if (profile?.display_name) {
-        supabaseResponse.headers.set("x-display-name", encodeURIComponent(profile.display_name));
-      }
     }
   }
 

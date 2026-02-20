@@ -2,8 +2,8 @@ import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { Sidebar } from "@/components/layout/sidebar";
 import { UnreadCountProvider } from "@/components/layout/unread-count-provider";
+import { createClient } from "@/lib/supabase/server";
 import { getCategories } from "@/lib/queries/categories";
-import { headers } from "next/headers";
 import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
@@ -13,13 +13,22 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [categories, headerStore] = await Promise.all([
+  const supabase = await createClient();
+
+  const [{ data: { user } }, categories] = await Promise.all([
+    supabase.auth.getUser(),
     getCategories(),
-    headers(),
   ]);
 
-  const encoded = headerStore.get("x-display-name");
-  const displayName = encoded ? decodeURIComponent(encoded) : undefined;
+  let displayName: string | undefined;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .maybeSingle();
+    displayName = profile?.display_name ?? undefined;
+  }
 
   return (
     <UnreadCountProvider>
