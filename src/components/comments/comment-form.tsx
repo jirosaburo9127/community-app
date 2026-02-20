@@ -22,7 +22,7 @@ export function CommentForm({ postId }: { postId: string }) {
         type="text"
         required
         placeholder="コメントを入力..."
-        className="flex-1 rounded-lg border border-border px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        className="min-w-0 flex-1 rounded-lg border border-border px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         disabled={isPending}
       />
       <button
