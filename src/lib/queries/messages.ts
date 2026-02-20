@@ -16,43 +16,60 @@ export async function getConversations() {
     return [];
   }
 
-  // Fetch other user profiles and last message for each conversation
-  const enriched = await Promise.all(
-    data.map(async (conv) => {
-      const otherUserId =
-        conv.participant1 === user.id ? conv.participant2 : conv.participant1;
+  if (data.length === 0) return [];
 
-      const [profileResult, messageResult, unreadResult] = await Promise.all([
-        supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", otherUserId)
-          .single(),
-        supabase
-          .from("direct_messages")
-          .select("body")
-          .eq("conversation_id", conv.id)
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .maybeSingle(),
-        supabase
-          .from("direct_messages")
-          .select("*", { count: "exact", head: true })
-          .eq("conversation_id", conv.id)
-          .eq("is_read", false)
-          .neq("sender_id", user.id),
-      ]);
+  // Batch fetch: other user profiles, last messages, and unread counts
+  const otherUserIds = data.map((conv) =>
+    conv.participant1 === user.id ? conv.participant2 : conv.participant1
+  );
+  const convIds = data.map((c) => c.id);
 
-      return {
-        ...conv,
-        other_user: profileResult.data,
-        last_message: messageResult.data?.body ?? "",
-        unread_count: unreadResult.count ?? 0,
-      };
-    })
+  const [profilesResult, messagesResult, unreadResult] = await Promise.all([
+    supabase.from("profiles").select("*").in("id", otherUserIds),
+    supabase
+      .from("direct_messages")
+      .select("conversation_id, body, created_at")
+      .in("conversation_id", convIds)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("direct_messages")
+      .select("conversation_id")
+      .in("conversation_id", convIds)
+      .eq("is_read", false)
+      .neq("sender_id", user.id),
+  ]);
+
+  const profileMap = new Map(
+    (profilesResult.data ?? []).map((p) => [p.id, p])
   );
 
-  return enriched;
+  // Get only the latest message per conversation
+  const lastMessageMap = new Map<string, string>();
+  for (const msg of messagesResult.data ?? []) {
+    if (!lastMessageMap.has(msg.conversation_id)) {
+      lastMessageMap.set(msg.conversation_id, msg.body);
+    }
+  }
+
+  // Count unread per conversation
+  const unreadCountMap = new Map<string, number>();
+  for (const msg of unreadResult.data ?? []) {
+    unreadCountMap.set(
+      msg.conversation_id,
+      (unreadCountMap.get(msg.conversation_id) ?? 0) + 1
+    );
+  }
+
+  return data.map((conv) => {
+    const otherUserId =
+      conv.participant1 === user.id ? conv.participant2 : conv.participant1;
+    return {
+      ...conv,
+      other_user: profileMap.get(otherUserId),
+      last_message: lastMessageMap.get(conv.id) ?? "",
+      unread_count: unreadCountMap.get(conv.id) ?? 0,
+    };
+  });
 }
 
 export async function getMessages(conversationId: string) {

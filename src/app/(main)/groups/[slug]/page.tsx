@@ -15,7 +15,12 @@ export default async function GroupDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const group = await getGroup(slug);
+
+  const supabase = await createClient();
+  const [group, { data: { user } }] = await Promise.all([
+    getGroup(slug),
+    supabase.auth.getUser(),
+  ]);
   if (!group) notFound();
 
   const [members, posts, rooms] = await Promise.all([
@@ -23,11 +28,6 @@ export default async function GroupDetailPage({
     getGroupPosts(group.id),
     getRooms(group.id),
   ]);
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   const isMember = members.some((m) => m.user_id === user?.id);
 

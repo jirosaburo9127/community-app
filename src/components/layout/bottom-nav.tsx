@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useUnreadCounts } from "./unread-count-provider";
 import { Home, Search, PlusCircle, MessageCircle, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,7 +14,8 @@ const navItems = [
   { href: "/profile", label: "マイページ", icon: User },
 ];
 
-export function BottomNav({ unreadMessages = 0 }: { unreadMessages?: number }) {
+export function BottomNav() {
+  const { messages: unreadMessages } = useUnreadCounts();
   const pathname = usePathname();
 
   return (

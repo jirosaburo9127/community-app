@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useUnreadCounts } from "./unread-count-provider";
 import { Home, Users, UsersRound, Rocket, Calendar, Zap, BookOpen, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle } from "lucide-react";
 
 const navItems = [
@@ -24,13 +25,10 @@ const navItems = [
 
 export function Sidebar({
   categories,
-  unreadMessages = 0,
-  unreadNotifications = 0,
 }: {
   categories: Category[];
-  unreadMessages?: number;
-  unreadNotifications?: number;
 }) {
+  const { messages: unreadMessages, notifications: unreadNotifications } = useUnreadCounts();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category");

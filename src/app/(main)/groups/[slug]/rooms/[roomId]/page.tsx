@@ -12,23 +12,23 @@ export default async function RoomChatPage({
   params: Promise<{ slug: string; roomId: string }>;
 }) {
   const { slug, roomId } = await params;
-  const group = await getGroup(slug);
-  if (!group) notFound();
 
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) notFound();
-
-  const members = await getGroupMembers(group.id);
-  const isMember = members.some((m) => m.user_id === user.id);
-  if (!isMember) notFound();
-
-  const room = await getRoom(roomId);
+  const [group, { data: { user } }, room] = await Promise.all([
+    getGroup(slug),
+    supabase.auth.getUser(),
+    getRoom(roomId),
+  ]);
+  if (!group || !user) notFound();
   if (!room || room.group_id !== group.id) notFound();
 
-  const messages = await getRoomMessages(roomId);
+  const [members, messages] = await Promise.all([
+    getGroupMembers(group.id),
+    getRoomMessages(roomId),
+  ]);
+
+  const isMember = members.some((m) => m.user_id === user.id);
+  if (!isMember) notFound();
 
   return (
     <div className="mx-auto flex h-[calc(100vh-8rem)] max-w-2xl flex-col rounded-xl border border-border bg-white overflow-hidden">

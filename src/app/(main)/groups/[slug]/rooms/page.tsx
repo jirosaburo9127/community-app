@@ -13,19 +13,21 @@ export default async function GroupRoomsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const group = await getGroup(slug);
-  if (!group) notFound();
 
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [group, { data: { user } }] = await Promise.all([
+    getGroup(slug),
+    supabase.auth.getUser(),
+  ]);
+  if (!group) notFound();
 
-  const members = await getGroupMembers(group.id);
+  const [members, rooms] = await Promise.all([
+    getGroupMembers(group.id),
+    getRooms(group.id),
+  ]);
+
   const isMember = members.some((m) => m.user_id === user?.id);
   if (!isMember) notFound();
-
-  const rooms = await getRooms(group.id);
 
   return (
     <div className="mx-auto max-w-lg">

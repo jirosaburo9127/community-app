@@ -5,20 +5,18 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { getCategoryColor } from "@/lib/constants";
 import type { Category } from "@/lib/types";
+import { useUnreadCounts } from "./unread-count-provider";
 import { useState, useEffect, useRef } from "react";
 import { Home, Users, UsersRound, Rocket, Calendar, Zap, BookOpen, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle, LogOut, Menu, X } from "lucide-react";
 
 export function Header({
   displayName,
   categories = [],
-  unreadMessages = 0,
-  unreadNotifications = 0,
 }: {
   displayName?: string;
   categories?: Category[];
-  unreadMessages?: number;
-  unreadNotifications?: number;
 }) {
+  const { messages: unreadMessages, notifications: unreadNotifications } = useUnreadCounts();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category");
