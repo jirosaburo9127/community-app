@@ -2,6 +2,8 @@ export const POINT_VALUES = {
   POST_CREATED: 10,
   COMMENT_ADDED: 3,
   REACTION_RECEIVED: 1,
+  LESSON_COMPLETED: 5,
+  COURSE_COMPLETED: 20,
 } as const;
 
 export const CATEGORIES_SEED = [

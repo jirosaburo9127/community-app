@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Home, Users, UsersRound, Rocket, Calendar, Zap, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle } from "lucide-react";
+import { Home, Users, UsersRound, Rocket, Calendar, Zap, BookOpen, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle } from "lucide-react";
 
 const navItems = [
   { href: "/home", label: "ホーム", icon: Home },
@@ -13,6 +13,7 @@ const navItems = [
   { href: "/groups", label: "グループ", icon: UsersRound },
   { href: "/events", label: "イベント", icon: Calendar },
   { href: "/challenges", label: "チャレンジ", icon: Zap },
+  { href: "/learning", label: "学習", icon: BookOpen },
   { href: "/ranking", label: "ランキング", icon: Trophy },
   { href: "/messages", label: "メッセージ", icon: MessageCircle, badgeKey: "messages" as const },
   { href: "/notifications", label: "通知", icon: Bell, badgeKey: "notifications" as const },

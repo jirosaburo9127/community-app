@@ -8,6 +8,7 @@ import {
   FileText,
   Calendar,
   Trophy,
+  BookOpen,
   Mail,
 } from "lucide-react";
 
@@ -18,6 +19,7 @@ const navItems = [
   { href: "/admin/posts", label: "投稿管理", icon: FileText },
   { href: "/admin/events", label: "イベント管理", icon: Calendar },
   { href: "/admin/challenges", label: "チャレンジ管理", icon: Trophy },
+  { href: "/admin/courses", label: "コース管理", icon: BookOpen },
 ];
 
 export function AdminSidebar() {

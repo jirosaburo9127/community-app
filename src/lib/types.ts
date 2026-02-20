@@ -191,3 +191,42 @@ export type Invitation = {
   profiles?: Profile;
   used_profile?: Profile;
 };
+
+export type Course = {
+  id: string;
+  title: string;
+  description: string;
+  cover_image_url: string | null;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  instructor_id: string;
+  is_published: boolean;
+  lesson_count: number;
+  enrollment_count: number;
+  created_at: string;
+  updated_at: string;
+  profiles?: Profile;
+};
+
+export type Lesson = {
+  id: string;
+  course_id: string;
+  title: string;
+  content: string;
+  sort_order: number;
+  created_at: string;
+};
+
+export type CourseEnrollment = {
+  id: string;
+  course_id: string;
+  user_id: string;
+  completed_at: string | null;
+  enrolled_at: string;
+};
+
+export type LessonCompletion = {
+  id: string;
+  lesson_id: string;
+  user_id: string;
+  completed_at: string;
+};
