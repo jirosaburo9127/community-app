@@ -2,9 +2,11 @@ import { cn } from "@/lib/utils";
 import { getCategoryColor } from "@/lib/constants";
 import type { Category, Post } from "@/lib/types";
 import type { ReactionCount } from "@/lib/queries/reactions";
-import { PostCard } from "./post-card";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, MessageCircle } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { formatDistanceToNow } from "date-fns";
+import { ja } from "date-fns/locale";
 
 export function CategorySection({
   category,
@@ -46,17 +48,89 @@ export function CategorySection({
         </Link>
       </div>
 
-      {/* 横スクロールカード */}
-      <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="w-[260px] flex-shrink-0 snap-start sm:w-[280px]"
-          >
-            <PostCard post={post} reactions={reactionsMap.get(post.id)} />
-          </div>
-        ))}
+      {/* 投稿リスト */}
+      <div className="divide-y divide-black/5">
+        {posts.map((post) => {
+          const reactions = reactionsMap.get(post.id);
+          return (
+            <FeedItem
+              key={post.id}
+              post={post}
+              reactions={reactions}
+              accentColor={color.text}
+            />
+          );
+        })}
       </div>
     </section>
+  );
+}
+
+function FeedItem({
+  post,
+  reactions,
+  accentColor,
+}: {
+  post: Post;
+  reactions?: ReactionCount[];
+  accentColor: string;
+}) {
+  const timeAgo = formatDistanceToNow(new Date(post.created_at), {
+    addSuffix: true,
+    locale: ja,
+  });
+
+  const hasImage = !!post.image_urls?.[0];
+
+  return (
+    <Link
+      href={`/posts/${post.id}`}
+      className="flex gap-3 py-3 transition-colors first:pt-0 last:pb-0 hover:opacity-80"
+    >
+      {/* テキスト部分 */}
+      <div className="min-w-0 flex-1">
+        <h3 className="text-sm font-bold leading-snug text-gray-900 line-clamp-2">
+          {post.title}
+        </h3>
+        <p className="mt-0.5 text-xs leading-relaxed text-gray-500 line-clamp-1">
+          {post.body}
+        </p>
+
+        <div className="mt-1.5 flex items-center gap-2 text-[11px] text-muted">
+          <div className="flex items-center gap-1">
+            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[8px] font-bold text-white">
+              {post.profiles?.display_name?.charAt(0) ?? "?"}
+            </div>
+            <span className="max-w-[72px] truncate font-medium">
+              {post.profiles?.display_name}
+            </span>
+          </div>
+          <span className="text-gray-400">{timeAgo}</span>
+          {(post.comment_count ?? 0) > 0 && (
+            <span className="flex items-center gap-0.5 text-gray-400">
+              <MessageCircle size={10} /> {post.comment_count}
+            </span>
+          )}
+          {reactions && reactions.length > 0 && (
+            <span className="text-gray-400">
+              {reactions.map((r) => r.emoji).join("")}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* サムネイル */}
+      {hasImage && (
+        <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
+          <Image
+            src={post.image_urls[0]}
+            alt={post.title}
+            fill
+            className="object-cover"
+            sizes="64px"
+          />
+        </div>
+      )}
+    </Link>
   );
 }
