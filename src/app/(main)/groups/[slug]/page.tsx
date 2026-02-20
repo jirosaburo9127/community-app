@@ -3,7 +3,8 @@ import { PostGrid } from "@/components/posts/post-grid";
 import { getGroup, getGroupMembers, getGroupPosts } from "@/lib/queries/groups";
 import { getReactionsForPosts } from "@/lib/queries/reactions";
 import { createClient } from "@/lib/supabase/server";
-import { ArrowLeft, PenSquare, UsersRound } from "lucide-react";
+import { getRooms } from "@/lib/queries/rooms";
+import { ArrowLeft, Hash, PenSquare, UsersRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -17,9 +18,10 @@ export default async function GroupDetailPage({
   const group = await getGroup(slug);
   if (!group) notFound();
 
-  const [members, posts] = await Promise.all([
+  const [members, posts, rooms] = await Promise.all([
     getGroupMembers(group.id),
     getGroupPosts(group.id),
+    getRooms(group.id),
   ]);
 
   const supabase = await createClient();
@@ -89,6 +91,55 @@ export default async function GroupDetailPage({
           creatorId={group.creator_id}
         />
       </div>
+
+      {/* Chat Rooms */}
+      {isMember && (
+        <div className="mt-6">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-900">チャットルーム</h3>
+            <Link
+              href={`/groups/${slug}/rooms`}
+              className="inline-flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary/90"
+            >
+              <Hash size={12} />
+              ルーム一覧
+            </Link>
+          </div>
+          {rooms.length > 0 ? (
+            <div className="space-y-2">
+              {rooms.slice(0, 5).map((room) => (
+                <Link
+                  key={room.id}
+                  href={`/groups/${slug}/rooms/${room.id}`}
+                  className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 transition-colors hover:border-primary/30 hover:bg-blue-50/30"
+                >
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 text-primary">
+                    <Hash size={14} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 truncate">{room.name}</p>
+                    {room.description && (
+                      <p className="text-xs text-muted truncate">{room.description}</p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+              {rooms.length > 5 && (
+                <Link
+                  href={`/groups/${slug}/rooms`}
+                  className="block text-center text-xs text-primary hover:underline py-2"
+                >
+                  他 {rooms.length - 5} ルームを見る
+                </Link>
+              )}
+            </div>
+          ) : (
+            <p className="text-center text-sm text-muted py-4 rounded-xl border border-border bg-white">
+              まだチャットルームがありません
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Posts */}
       <div className="mt-6">

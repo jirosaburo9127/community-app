@@ -230,3 +230,21 @@ export type LessonCompletion = {
   user_id: string;
   completed_at: string;
 };
+
+export type GroupRoom = {
+  id: string;
+  group_id: string;
+  name: string;
+  description: string;
+  creator_id: string;
+  created_at: string;
+};
+
+export type RoomMessage = {
+  id: string;
+  room_id: string;
+  sender_id: string;
+  body: string;
+  created_at: string;
+  profiles?: Profile;
+};
