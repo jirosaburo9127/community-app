@@ -113,7 +113,7 @@ function FeedItem({
         </div>
       )}
 
-      {/* フッター: リアクション + コメント数 */}
+      {/* フッター: リアクション + コメント数 + 続きを読む */}
       <div className="mt-2.5 flex items-center gap-3 text-xs text-gray-400">
         {reactions && reactions.length > 0 && (
           <div className="flex items-center gap-1">
@@ -137,6 +137,9 @@ function FeedItem({
             <MessageCircle size={12} /> {post.comment_count}
           </span>
         )}
+        <span className="ml-auto flex items-center gap-0.5 font-medium text-primary">
+          続きを読む <ChevronRight size={14} />
+        </span>
       </div>
     </Link>
   );
