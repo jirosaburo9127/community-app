@@ -1,5 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import { POSTS_PER_PAGE } from "@/lib/constants";
+import { getCategories } from "./categories";
+
+// カテゴリslug→idのマッピング（キャッシュ済みカテゴリを利用）
+async function getCategoryIdBySlug(slug: string): Promise<number | null> {
+  const categories = await getCategories();
+  const cat = categories.find((c) => c.slug === slug);
+  return cat?.id ?? null;
+}
 
 export async function getPosts({
   categorySlug,
@@ -18,15 +26,9 @@ export async function getPosts({
     .limit(POSTS_PER_PAGE);
 
   if (categorySlug) {
-    // First get the category id from slug
-    const { data: category } = await supabase
-      .from("categories")
-      .select("id")
-      .eq("slug", categorySlug)
-      .single();
-
-    if (category) {
-      query = query.eq("category_id", category.id);
+    const categoryId = await getCategoryIdBySlug(categorySlug);
+    if (categoryId) {
+      query = query.eq("category_id", categoryId);
     }
   }
 
@@ -43,20 +45,14 @@ export async function getPosts({
 }
 
 export async function getEventPosts(limit = 5) {
+  const categoryId = await getCategoryIdBySlug("events");
+  if (!categoryId) return [];
+
   const supabase = await createClient();
-
-  const { data: category, error: catError } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("slug", "events")
-    .maybeSingle();
-
-  if (catError || !category) return [];
-
   const { data, error } = await supabase
     .from("posts")
     .select("*, profiles(*), categories(*)")
-    .eq("category_id", category.id)
+    .eq("category_id", categoryId)
     .is("group_id", null)
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -66,20 +62,14 @@ export async function getEventPosts(limit = 5) {
 }
 
 export async function getPinnedAnnouncements() {
+  const categoryId = await getCategoryIdBySlug("management");
+  if (!categoryId) return [];
+
   const supabase = await createClient();
-
-  const { data: category } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("slug", "management")
-    .maybeSingle();
-
-  if (!category) return [];
-
   const { data, error } = await supabase
     .from("posts")
     .select("id, title")
-    .eq("category_id", category.id)
+    .eq("category_id", categoryId)
     .eq("is_pinned", true)
     .is("group_id", null)
     .order("created_at", { ascending: false })

@@ -58,7 +58,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // ログイン済みの場合のみ、admin/onboarding チェック（1クエリで両方取得）
+  // admin/onboarding チェックが必要なルートのみprofileクエリを実行
   if (user && !isAuthPage) {
     const needsAdminCheck = pathname.startsWith("/admin");
     const needsOnboardingCheck = !pathname.startsWith("/onboarding") && !pathname.startsWith("/api");
@@ -66,7 +66,7 @@ export async function updateSession(request: NextRequest) {
     if (needsAdminCheck || needsOnboardingCheck) {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("is_admin, onboarding_completed")
+        .select("is_admin, onboarding_completed, display_name")
         .eq("id", user.id)
         .single();
 
@@ -82,6 +82,11 @@ export async function updateSession(request: NextRequest) {
         const url = request.nextUrl.clone();
         url.pathname = "/onboarding";
         return NextResponse.redirect(url);
+      }
+
+      // レイアウトで再クエリしなくて済むようヘッダーで渡す
+      if (profile?.display_name) {
+        supabaseResponse.headers.set("x-display-name", encodeURIComponent(profile.display_name));
       }
     }
   }
