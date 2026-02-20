@@ -48,19 +48,15 @@ export function CategorySection({
         </Link>
       </div>
 
-      {/* 投稿リスト */}
-      <div className="divide-y divide-black/5">
-        {posts.map((post) => {
-          const reactions = reactionsMap.get(post.id);
-          return (
-            <FeedItem
-              key={post.id}
-              post={post}
-              reactions={reactions}
-              accentColor={color.text}
-            />
-          );
-        })}
+      {/* SNSタイムライン風 */}
+      <div className="space-y-3">
+        {posts.map((post) => (
+          <FeedItem
+            key={post.id}
+            post={post}
+            reactions={reactionsMap.get(post.id)}
+          />
+        ))}
       </div>
     </section>
   );
@@ -69,11 +65,9 @@ export function CategorySection({
 function FeedItem({
   post,
   reactions,
-  accentColor,
 }: {
   post: Post;
   reactions?: ReactionCount[];
-  accentColor: string;
 }) {
   const timeAgo = formatDistanceToNow(new Date(post.created_at), {
     addSuffix: true,
@@ -85,52 +79,65 @@ function FeedItem({
   return (
     <Link
       href={`/posts/${post.id}`}
-      className="flex gap-3 py-3 transition-colors first:pt-0 last:pb-0 hover:opacity-80"
+      className="block rounded-xl bg-white p-3.5 transition-all hover:shadow-md hover:-translate-y-0.5"
     >
-      {/* テキスト部分 */}
-      <div className="min-w-0 flex-1">
-        <h3 className="text-sm font-bold leading-snug text-gray-900 line-clamp-2">
-          {post.title}
-        </h3>
-        <p className="mt-0.5 text-xs leading-relaxed text-gray-500 line-clamp-1">
-          {post.body}
-        </p>
-
-        <div className="mt-1.5 flex items-center gap-2 text-[11px] text-muted">
-          <div className="flex items-center gap-1">
-            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[8px] font-bold text-white">
-              {post.profiles?.display_name?.charAt(0) ?? "?"}
-            </div>
-            <span className="max-w-[72px] truncate font-medium">
-              {post.profiles?.display_name}
-            </span>
-          </div>
-          <span className="text-gray-400">{timeAgo}</span>
-          {(post.comment_count ?? 0) > 0 && (
-            <span className="flex items-center gap-0.5 text-gray-400">
-              <MessageCircle size={10} /> {post.comment_count}
-            </span>
-          )}
-          {reactions && reactions.length > 0 && (
-            <span className="text-gray-400">
-              {reactions.map((r) => r.emoji).join("")}
-            </span>
-          )}
+      {/* ヘッダー: アバター + 名前 + 時刻 */}
+      <div className="mb-2 flex items-center gap-2">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[11px] font-bold text-white">
+          {post.profiles?.display_name?.charAt(0) ?? "?"}
         </div>
+        <span className="text-sm font-semibold text-gray-800">
+          {post.profiles?.display_name}
+        </span>
+        <span className="text-xs text-gray-400">{timeAgo}</span>
       </div>
 
-      {/* サムネイル */}
+      {/* タイトル + 本文 */}
+      <h3 className="text-sm font-bold leading-snug text-gray-900 line-clamp-2">
+        {post.title}
+      </h3>
+      <p className="mt-0.5 text-xs leading-relaxed text-gray-500 line-clamp-2">
+        {post.body}
+      </p>
+
+      {/* 画像 */}
       {hasImage && (
-        <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
+        <div className="relative mt-2.5 aspect-video w-full overflow-hidden rounded-lg">
           <Image
             src={post.image_urls[0]}
             alt={post.title}
             fill
             className="object-cover"
-            sizes="64px"
+            sizes="(max-width: 640px) 100vw, 480px"
           />
         </div>
       )}
+
+      {/* フッター: リアクション + コメント数 */}
+      <div className="mt-2.5 flex items-center gap-3 text-xs text-gray-400">
+        {reactions && reactions.length > 0 && (
+          <div className="flex items-center gap-1">
+            {reactions.map((r) => (
+              <span
+                key={r.emoji}
+                className={cn(
+                  "inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[11px]",
+                  r.reacted
+                    ? "bg-primary/8 text-primary"
+                    : "bg-gray-100 text-gray-500"
+                )}
+              >
+                {r.emoji} {r.count}
+              </span>
+            ))}
+          </div>
+        )}
+        {(post.comment_count ?? 0) > 0 && (
+          <span className="flex items-center gap-0.5">
+            <MessageCircle size={12} /> {post.comment_count}
+          </span>
+        )}
+      </div>
     </Link>
   );
 }
