@@ -5,7 +5,7 @@ import type { Category } from "@/lib/types";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useUnreadCounts } from "./unread-count-provider";
-import { Home, Users, UsersRound, Rocket, Calendar, Zap, BookOpen, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle } from "lucide-react";
+import { Home, Users, UsersRound, Rocket, Calendar, Zap, BookOpen, Briefcase, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle, GraduationCap, Library } from "lucide-react";
 
 const navItems = [
   { href: "/home", label: "ホーム", icon: Home },
@@ -13,6 +13,9 @@ const navItems = [
   { href: "/startups", label: "スタートアップ", icon: Rocket },
   { href: "/groups", label: "グループ", icon: UsersRound },
   { href: "/events", label: "イベント", icon: Calendar },
+  { href: "/jobs", label: "求人/コラボ", icon: Briefcase },
+  { href: "/mentoring", label: "メンタリング", icon: GraduationCap },
+  { href: "/resources", label: "リソース", icon: Library },
   { href: "/challenges", label: "チャレンジ", icon: Zap },
   { href: "/learning", label: "学習", icon: BookOpen },
   { href: "/ranking", label: "ランキング", icon: Trophy },

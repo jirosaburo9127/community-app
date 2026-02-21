@@ -231,6 +231,24 @@ export type LessonCompletion = {
   completed_at: string;
 };
 
+export type JobCategory = 'engineer' | 'designer' | 'marketer' | 'business' | 'other';
+
+export type Job = {
+  id: string;
+  title: string;
+  description: string;
+  category: JobCategory;
+  tags: string[];
+  startup_id: string | null;
+  author_id: string;
+  status: 'open' | 'closed';
+  created_at: string;
+  updated_at: string;
+  // Joined
+  profiles?: Profile;
+  startups?: Startup;
+};
+
 export type GroupRoom = {
   id: string;
   group_id: string;
@@ -246,5 +264,60 @@ export type RoomMessage = {
   sender_id: string;
   body: string;
   created_at: string;
+  profiles?: Profile;
+};
+
+export type BadgeDefinition = {
+  id: string;
+  name: string;
+  description: string;
+  icon_emoji: string;
+  sort_order: number;
+};
+
+export type UserBadge = {
+  id: string;
+  user_id: string;
+  badge_id: string;
+  earned_at: string;
+  badge_definitions?: BadgeDefinition;
+};
+
+export type MentorProfile = {
+  id: string;
+  user_id: string;
+  expertise_areas: string[];
+  bio: string;
+  max_mentees: number;
+  is_available: boolean;
+  created_at: string;
+  updated_at: string;
+  profiles?: Profile;
+  accepted_count?: number;
+};
+
+export type MentoringRequest = {
+  id: string;
+  mentor_id: string;
+  mentee_id: string;
+  message: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  created_at: string;
+  updated_at: string;
+  mentor_profiles?: MentorProfile & { profiles?: Profile };
+  profiles?: Profile;
+};
+
+export type ResourceCategory = 'template' | 'pitch' | 'tech_article' | 'tool' | 'book' | 'other';
+
+export type Resource = {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  category: ResourceCategory;
+  author_id: string;
+  created_at: string;
+  updated_at: string;
   profiles?: Profile;
 };

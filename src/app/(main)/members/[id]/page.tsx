@@ -1,5 +1,7 @@
 import { getMember } from "@/lib/queries/members";
+import { getUserBadges } from "@/lib/queries/badges";
 import { ActivityTimeline } from "@/components/profile/activity-timeline";
+import { BadgeList } from "@/components/badges/badge-list";
 import { DmButton } from "@/components/messages/dm-button";
 import { createClient } from "@/lib/supabase/server";
 import type { Post } from "@/lib/types";
@@ -30,6 +32,8 @@ export default async function MemberDetailPage({
   const { id } = await params;
   const member = await getMember(id);
   if (!member) notFound();
+
+  const badges = await getUserBadges(member.id);
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -117,6 +121,9 @@ export default async function MemberDetailPage({
               </div>
             </div>
           )}
+
+          {/* Badges */}
+          <BadgeList badges={badges} />
 
           {/* Social links */}
           {socialLinks.length > 0 && (

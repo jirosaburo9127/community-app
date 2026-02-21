@@ -1,7 +1,9 @@
 import { getMyProfile } from "@/lib/queries/profile";
+import { getUserBadges } from "@/lib/queries/badges";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/lib/actions/auth";
 import { ActivityTimeline } from "@/components/profile/activity-timeline";
+import { BadgeList } from "@/components/badges/badge-list";
 import {
   Award,
   Building2,
@@ -40,6 +42,8 @@ export default async function ProfilePage() {
   if (!profile) redirect("/login");
 
   const supabase = await createClient();
+
+  const badges = await getUserBadges(profile.id);
 
   const [
     { count: postCount },
@@ -154,6 +158,9 @@ export default async function ProfilePage() {
               </div>
             </div>
           )}
+
+          {/* Badges */}
+          <BadgeList badges={badges} />
 
           <div className="mt-6 grid grid-cols-3 gap-3">
             <div className="flex flex-col items-center rounded-xl bg-surface p-3">

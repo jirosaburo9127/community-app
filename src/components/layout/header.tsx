@@ -7,7 +7,7 @@ import { getCategoryColor } from "@/lib/constants";
 import type { Category } from "@/lib/types";
 import { useUnreadCounts } from "./unread-count-provider";
 import { useState, useEffect, useRef } from "react";
-import { Home, Users, UsersRound, Rocket, Calendar, Zap, BookOpen, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle, LogOut, Menu, X } from "lucide-react";
+import { Home, Users, UsersRound, Rocket, Calendar, Zap, BookOpen, Briefcase, PenSquare, Bookmark, Trophy, User, Search, Bell, MessageCircle, LogOut, Menu, X, GraduationCap, Library } from "lucide-react";
 
 export function Header({
   displayName,
@@ -29,6 +29,9 @@ export function Header({
     { href: "/startups", label: "スタートアップ", icon: Rocket },
     { href: "/groups", label: "グループ", icon: UsersRound },
     { href: "/events", label: "イベント", icon: Calendar },
+    { href: "/jobs", label: "求人", icon: Briefcase },
+    { href: "/mentoring", label: "メンタリング", icon: GraduationCap },
+    { href: "/resources", label: "リソース", icon: Library },
     { href: "/challenges", label: "チャレンジ", icon: Zap },
     { href: "/learning", label: "学習", icon: BookOpen },
     { href: "/ranking", label: "ランキング", icon: Trophy },
@@ -161,53 +164,90 @@ export function Header({
 
       </div>
 
-      {/* モバイル用ドロップダウンメニュー（sm未満） */}
+      {/* モバイル用メニュー（sm未満） */}
       {menuOpen && (
-        <div className="sm:hidden border-t border-border bg-white px-4 py-3 shadow-lg">
-          {/* カテゴリ */}
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">カテゴリ</p>
-          <div className="mb-3 space-y-0.5">
-            <Link
-              href="/home"
-              className={cn(
-                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                pathname === "/home" && !currentCategory
-                  ? "bg-primary/8 text-primary"
-                  : "text-gray-700 hover:bg-gray-50"
-              )}
-            >
-              <span className="text-base">📋</span>
-              すべて
-            </Link>
-            {categories.map((cat) => {
-              const color = getCategoryColor(cat.slug);
-              const isActive = currentCategory === cat.slug;
-              return (
-                <Link
-                  key={cat.slug}
-                  href={`/home?category=${cat.slug}`}
-                  className={cn(
-                    "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                    isActive
-                      ? cn(color.bg, color.text)
-                      : "text-gray-700 hover:bg-gray-50"
-                  )}
-                >
-                  <span className="text-base">{cat.icon_emoji}</span>
-                  {cat.name}
-                </Link>
-              );
-            })}
+        <div className="sm:hidden border-t border-border bg-white shadow-lg max-h-[calc(100dvh-3.5rem)] overflow-y-auto">
+
+          {/* ナビゲーション — グリッド */}
+          <div className="px-4 pt-3 pb-2">
+            <div className="grid grid-cols-4 gap-1">
+              {navItems.map((item) => {
+                const isActive =
+                  pathname === item.href ||
+                  pathname.startsWith(item.href + "/");
+
+                const badge =
+                  "badgeKey" in item && item.badgeKey === "messages"
+                    ? unreadMessages
+                    : "badgeKey" in item && item.badgeKey === "notifications"
+                      ? unreadNotifications
+                      : 0;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "relative flex flex-col items-center gap-1 rounded-xl px-1 py-2.5 text-[11px] font-medium transition-colors",
+                      isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-gray-600 hover:bg-gray-50"
+                    )}
+                  >
+                    <item.icon size={20} />
+                    {item.label}
+                    {badge > 0 && (
+                      <span className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white">
+                        {badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
 
-          {/* 区切り線 + ユーティリティ */}
-          <div className="border-t border-border pt-3 space-y-0.5">
-            <Link href="/search" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-              <Search size={16} /> 検索
-            </Link>
+          {/* カテゴリ */}
+          <div className="border-t border-border px-4 pt-3 pb-2">
+            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted">カテゴリ</p>
+            <div className="flex flex-wrap gap-1.5">
+              <Link
+                href="/home"
+                className={cn(
+                  "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                  pathname === "/home" && !currentCategory
+                    ? "bg-primary text-white"
+                    : "bg-gray-100 text-gray-600"
+                )}
+              >
+                すべて
+              </Link>
+              {categories.map((cat) => {
+                const color = getCategoryColor(cat.slug);
+                const isActive = currentCategory === cat.slug;
+                return (
+                  <Link
+                    key={cat.slug}
+                    href={`/home?category=${cat.slug}`}
+                    className={cn(
+                      "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                      isActive
+                        ? cn(color.tab, "text-white")
+                        : "bg-gray-100 text-gray-600"
+                    )}
+                  >
+                    {cat.icon_emoji} {cat.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ログアウト */}
+          <div className="border-t border-border px-4 py-3">
             <button
               onClick={handleLogout}
-              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-red-500 hover:bg-red-50"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 px-3 py-2 text-sm font-medium text-red-500 transition-colors hover:bg-red-50"
             >
               <LogOut size={16} /> ログアウト
             </button>
