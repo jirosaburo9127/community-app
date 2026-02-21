@@ -9,12 +9,12 @@ const typeConfig = {
   comment: {
     icon: MessageCircle,
     label: "がコメントしました",
-    color: "text-blue-500",
+    color: "text-teal-500",
   },
   reaction: {
     icon: Heart,
     label: "がリアクションしました",
-    color: "text-pink-500",
+    color: "text-orange-400",
   },
 } as const;
 

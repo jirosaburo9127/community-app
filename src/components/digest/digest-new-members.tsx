@@ -29,7 +29,7 @@ export function DigestNewMembers({ members }: { members: NewMember[] }) {
   return (
     <div className="rounded-xl border border-border bg-white">
       <div className="flex items-center gap-2 border-b border-border px-5 py-3.5">
-        <UserPlus size={16} className="text-green-500" />
+        <UserPlus size={16} className="text-emerald-600" />
         <h3 className="text-sm font-semibold text-gray-900">新メンバー</h3>
       </div>
       <div className="flex flex-wrap gap-3 p-4">

@@ -8,10 +8,10 @@ export default function AuthLayout({
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 text-lg font-bold text-white backdrop-blur-sm">
-            IH
+            わ
           </div>
-          <h1 className="text-2xl font-bold text-white">Incubation Hub</h1>
-          <p className="mt-1 text-sm text-white/70">スタートアップと学生のためのコミュニティ</p>
+          <h1 className="text-2xl font-bold text-white">まちのわ</h1>
+          <p className="mt-1 text-sm text-white/70">小さな挑戦を続けられるあたたかい居場所</p>
         </div>
         <div className="rounded-2xl bg-white p-8 shadow-2xl shadow-black/10">
           {children}

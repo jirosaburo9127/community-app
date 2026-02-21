@@ -23,7 +23,7 @@ export function RoomList({
         <Link
           key={room.id}
           href={`/groups/${groupSlug}/rooms/${room.id}`}
-          className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 transition-colors hover:border-primary/30 hover:bg-blue-50/30"
+          className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 transition-colors hover:border-primary/30 hover:bg-primary/5"
         >
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 text-primary">
             <Hash size={16} />

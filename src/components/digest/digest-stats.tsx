@@ -22,7 +22,7 @@ export function DigestStats({
         <span className="text-xs text-muted">コメント</span>
       </div>
       <div className="flex flex-col items-center rounded-xl border border-border bg-white p-4">
-        <UserPlus size={20} className="text-green-500" />
+        <UserPlus size={20} className="text-emerald-600" />
         <span className="mt-1.5 text-2xl font-bold text-gray-900">
           {stats.newMembers}
         </span>

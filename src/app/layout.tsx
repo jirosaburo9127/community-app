@@ -8,8 +8,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Incubation Hub",
-  description: "スタートアップと学生のためのイノベーションコミュニティ",
+  title: "まちのわ",
+  description: "三重の若者が小さな挑戦を続けられるあたたかい居場所",
 };
 
 export default function RootLayout({

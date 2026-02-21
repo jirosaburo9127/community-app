@@ -10,10 +10,10 @@ const roleLabels: Record<string, string> = {
 };
 
 const roleColors: Record<string, string> = {
-  student: "bg-blue-100 text-blue-700",
-  entrepreneur: "bg-purple-100 text-purple-700",
-  mentor: "bg-green-100 text-green-700",
-  investor: "bg-amber-100 text-amber-700",
+  student: "bg-emerald-100 text-emerald-700",
+  entrepreneur: "bg-amber-100 text-amber-700",
+  mentor: "bg-teal-100 text-teal-700",
+  investor: "bg-orange-100 text-orange-700",
 };
 
 export function MemberCard({ member }: { member: Profile }) {

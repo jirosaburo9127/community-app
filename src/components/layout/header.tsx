@@ -69,10 +69,10 @@ export function Header({
         {/* ロゴ */}
         <Link href="/home" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-sm font-bold text-white">
-            IH
+            わ
           </div>
           <span className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Incubation Hub
+            まちのわ
           </span>
         </Link>
 

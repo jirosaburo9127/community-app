@@ -9,7 +9,7 @@ import Link from 'next/link'
 const DIFFICULTY_LABELS: Record<Challenge['difficulty'], { label: string; color: string }> = {
   beginner: { label: '初級', color: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
   intermediate: { label: '中級', color: 'bg-amber-50 text-amber-600 border-amber-200' },
-  advanced: { label: '上級', color: 'bg-rose-50 text-rose-600 border-rose-200' },
+  advanced: { label: '上級', color: 'bg-orange-50 text-orange-600 border-orange-200' },
 }
 
 export default function ChallengesPage() {

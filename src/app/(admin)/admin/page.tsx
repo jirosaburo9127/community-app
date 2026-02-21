@@ -30,15 +30,15 @@ export default async function AdminDashboardPage() {
   ]);
 
   const stats = [
-    { label: "総ユーザー数", value: totalUsers ?? 0, icon: Users, color: "text-blue-600 bg-blue-50" },
-    { label: "今月の新規ユーザー", value: newUsersThisMonth ?? 0, icon: UserPlus, color: "text-green-600 bg-green-50" },
-    { label: "総投稿数", value: totalPosts ?? 0, icon: FileText, color: "text-purple-600 bg-purple-50" },
-    { label: "今月の投稿数", value: postsThisMonth ?? 0, icon: PenLine, color: "text-indigo-600 bg-indigo-50" },
-    { label: "総コメント数", value: totalComments ?? 0, icon: MessageCircle, color: "text-orange-600 bg-orange-50" },
-    { label: "総イベント数", value: totalEvents ?? 0, icon: Calendar, color: "text-teal-600 bg-teal-50" },
-    { label: "イベント参加登録数", value: totalRegistrations ?? 0, icon: BarChart3, color: "text-pink-600 bg-pink-50" },
-    { label: "総チャレンジ数", value: totalChallenges ?? 0, icon: Trophy, color: "text-amber-600 bg-amber-50" },
-    { label: "未使用招待コード", value: unusedInvitations ?? 0, icon: Mail, color: "text-cyan-600 bg-cyan-50" },
+    { label: "総ユーザー数", value: totalUsers ?? 0, icon: Users, color: "text-emerald-700 bg-emerald-50" },
+    { label: "今月の新規ユーザー", value: newUsersThisMonth ?? 0, icon: UserPlus, color: "text-teal-700 bg-teal-50" },
+    { label: "総投稿数", value: totalPosts ?? 0, icon: FileText, color: "text-amber-700 bg-amber-50" },
+    { label: "今月の投稿数", value: postsThisMonth ?? 0, icon: PenLine, color: "text-orange-700 bg-orange-50" },
+    { label: "総コメント数", value: totalComments ?? 0, icon: MessageCircle, color: "text-stone-700 bg-stone-100" },
+    { label: "総イベント数", value: totalEvents ?? 0, icon: Calendar, color: "text-teal-700 bg-teal-50" },
+    { label: "イベント参加登録数", value: totalRegistrations ?? 0, icon: BarChart3, color: "text-lime-700 bg-lime-50" },
+    { label: "総チャレンジ数", value: totalChallenges ?? 0, icon: Trophy, color: "text-amber-700 bg-amber-50" },
+    { label: "未使用招待コード", value: unusedInvitations ?? 0, icon: Mail, color: "text-emerald-700 bg-emerald-50" },
   ];
 
   return (
