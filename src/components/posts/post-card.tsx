@@ -38,7 +38,7 @@ export function PostCard({
           />
         </div>
       ) : (
-        <div className={cn("h-1.5 bg-gradient-to-r", catColor.gradient)} />
+        <div className="h-px bg-border" />
       )}
       <div className="p-3.5">
         <div className="mb-1.5 flex flex-wrap items-center gap-1.5">

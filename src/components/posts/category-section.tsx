@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { getCategoryColor } from "@/lib/constants";
 import type { Category, Post } from "@/lib/types";
 import type { ReactionCount } from "@/lib/queries/reactions";
 import { ChevronRight, MessageCircle } from "lucide-react";
@@ -17,31 +16,21 @@ export function CategorySection({
   posts: Post[];
   reactionsMap: Map<string, ReactionCount[]>;
 }) {
-  const color = getCategoryColor(category.slug);
-
   return (
-    <section className={cn("rounded-2xl p-4", color.bg)}>
+    <section className="rounded-2xl border border-border bg-white p-4">
       {/* カテゴリ見出し */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div
-            className={cn(
-              "h-8 w-1.5 rounded-full bg-gradient-to-b",
-              color.gradient
-            )}
-          />
+          <div className="h-8 w-1.5 rounded-full bg-gray-300" />
           <span className="text-lg">{category.icon_emoji}</span>
-          <h2 className={cn("text-base font-bold", color.text)}>
+          <h2 className="text-base font-bold text-gray-900">
             {category.name}
           </h2>
           <span className="text-xs text-muted">({posts.length})</span>
         </div>
         <Link
           href={`/home?category=${category.slug}`}
-          className={cn(
-            "flex items-center gap-0.5 text-xs font-medium transition-colors hover:opacity-80",
-            color.text
-          )}
+          className="flex items-center gap-0.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900"
         >
           もっと見る
           <ChevronRight size={14} />

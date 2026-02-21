@@ -17,16 +17,16 @@ export const CATEGORIES_SEED = [
 ] as const;
 
 export const CATEGORY_COLORS: Record<string, { bg: string; text: string; gradient: string; tab: string }> = {
-  "startup-news":     { bg: "bg-emerald-50",  text: "text-emerald-700",  gradient: "from-emerald-600 to-emerald-400", tab: "bg-emerald-600" },
-  "idea-consultation":{ bg: "bg-amber-50",    text: "text-amber-700",    gradient: "from-amber-500 to-amber-400",   tab: "bg-amber-500" },
-  "events":           { bg: "bg-teal-50",     text: "text-teal-700",     gradient: "from-teal-500 to-teal-400",     tab: "bg-teal-600" },
-  "questions":        { bg: "bg-orange-50",   text: "text-orange-700",   gradient: "from-orange-500 to-orange-400", tab: "bg-orange-600" },
-  "projects":         { bg: "bg-lime-50",     text: "text-lime-700",     gradient: "from-lime-500 to-lime-400",     tab: "bg-lime-600" },
-  "zatsudan":         { bg: "bg-stone-100",   text: "text-stone-700",    gradient: "from-stone-500 to-stone-400",   tab: "bg-stone-500" },
-  "management":       { bg: "bg-yellow-50",   text: "text-yellow-700",   gradient: "from-yellow-500 to-yellow-400", tab: "bg-yellow-600" },
+  "startup-news":     { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" },
+  "idea-consultation":{ bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" },
+  "events":           { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" },
+  "questions":        { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" },
+  "projects":         { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" },
+  "zatsudan":         { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" },
+  "management":       { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" },
 };
 
-const DEFAULT_CATEGORY_COLOR = { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-500" };
+const DEFAULT_CATEGORY_COLOR = { bg: "bg-gray-50", text: "text-gray-700", gradient: "from-gray-400 to-gray-300", tab: "bg-gray-800" };
 
 export function getCategoryColor(slug: string | undefined) {
   return (slug && CATEGORY_COLORS[slug]) || DEFAULT_CATEGORY_COLOR;

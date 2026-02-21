@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { getCategoryColor } from "@/lib/constants";
 import type { Category } from "@/lib/types";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -63,7 +62,6 @@ export function CategoryTabs({ categories }: { categories: Category[] }) {
             すべて
           </Link>
           {categories.map((cat) => {
-            const color = getCategoryColor(cat.slug);
             const isActive = current === cat.slug;
             return (
               <Link
@@ -72,7 +70,7 @@ export function CategoryTabs({ categories }: { categories: Category[] }) {
                 className={cn(
                   "flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium transition-colors",
                   isActive
-                    ? cn(color.bg, color.text)
+                    ? "bg-gray-100 text-gray-900 font-semibold"
                     : "text-gray-700 hover:bg-gray-50"
                 )}
               >
