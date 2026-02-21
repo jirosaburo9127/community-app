@@ -64,7 +64,7 @@ export default async function MemberDetailPage({
       </div>
 
       <div className="overflow-hidden rounded-xl border border-border bg-white">
-        <div className="h-20 bg-gradient-to-r from-primary to-accent" />
+        <div className="h-20 bg-primary" />
         <div className="px-6 pb-6">
           <div className="flex flex-col items-center -mt-10">
             {member.avatar_url ? (
@@ -76,7 +76,7 @@ export default async function MemberDetailPage({
                 className="h-20 w-20 rounded-full border-4 border-white object-cover shadow-md"
               />
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-primary to-accent text-2xl font-bold text-white shadow-md">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-primary text-2xl font-bold text-white shadow-md">
                 {member.display_name.charAt(0)}
               </div>
             )}

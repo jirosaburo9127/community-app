@@ -185,7 +185,7 @@ export default function OnboardingPage() {
                 i < step
                   ? "bg-primary text-white"
                   : i === step
-                    ? "bg-gradient-to-r from-primary to-accent text-white shadow-md shadow-primary/20"
+                    ? "bg-primary text-white shadow-sm"
                     : "bg-gray-100 text-muted"
               }`}
             >
@@ -340,7 +340,7 @@ export default function OnboardingPage() {
                   className="h-30 w-30 rounded-full object-cover border-2 border-border"
                 />
               ) : (
-                <div className="flex h-30 w-30 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-4xl font-bold text-white">
+                <div className="flex h-30 w-30 items-center justify-center rounded-full bg-primary text-4xl font-bold text-white">
                   {displayName.charAt(0)}
                 </div>
               )}
@@ -383,7 +383,7 @@ export default function OnboardingPage() {
           <button
             type="button"
             onClick={() => setStep(step + 1)}
-            className="inline-flex items-center gap-1 rounded-xl bg-gradient-to-r from-primary to-accent px-5 py-2.5 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:-translate-y-0.5"
+            className="inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md"
           >
             次へ
             <ChevronRight size={16} />
@@ -393,7 +393,7 @@ export default function OnboardingPage() {
             type="button"
             onClick={handleComplete}
             disabled={saving}
-            className="inline-flex items-center gap-1 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-2.5 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50"
+            className="inline-flex items-center gap-1 rounded-xl bg-primary px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md disabled:opacity-50"
           >
             {saving ? "設定中..." : "完了してはじめる"}
           </button>

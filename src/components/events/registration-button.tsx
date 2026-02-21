@@ -65,7 +65,7 @@ export function RegistrationButton({
       className={`w-full rounded-xl px-4 py-2.5 text-sm font-medium transition-all disabled:opacity-50 ${
         isRegistered
           ? "border border-red-200 text-red-600 hover:bg-red-50"
-          : "bg-gradient-to-r from-primary to-accent text-white shadow-md shadow-primary/20 hover:shadow-lg"
+          : "bg-primary text-white shadow-sm hover:shadow-md"
       }`}
     >
       {pending

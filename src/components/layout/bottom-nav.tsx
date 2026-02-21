@@ -32,7 +32,7 @@ export function BottomNav() {
                 href={item.href}
                 className="flex flex-col items-center gap-0.5"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white shadow-md shadow-primary/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white shadow-sm">
                   <item.icon size={20} />
                 </div>
               </Link>

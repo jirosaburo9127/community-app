@@ -16,7 +16,7 @@ export default async function EventsPage() {
         </div>
         <Link
           href="/events/new"
-          className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:-translate-y-0.5"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md"
         >
           <Plus size={16} />
           作成する

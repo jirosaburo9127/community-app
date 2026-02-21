@@ -176,7 +176,7 @@ export default function ProfileEditPage() {
                 className="h-20 w-20 rounded-full object-cover border-2 border-border"
               />
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-2xl font-bold text-white">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-2xl font-bold text-white">
                 {profile.display_name.charAt(0)}
               </div>
             )}
@@ -368,7 +368,7 @@ export default function ProfileEditPage() {
         <button
           type="submit"
           disabled={pending}
-          className="w-full rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg disabled:opacity-50"
+          className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md disabled:opacity-50"
         >
           {pending ? "保存中..." : "保存する"}
         </button>

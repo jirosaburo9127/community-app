@@ -190,7 +190,7 @@ export function EventForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg disabled:opacity-50"
+        className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md disabled:opacity-50"
       >
         {pending ? "作成中..." : "イベントを作成"}
       </button>

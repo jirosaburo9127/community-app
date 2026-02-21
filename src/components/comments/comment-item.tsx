@@ -31,7 +31,7 @@ export function CommentItem({
 
   return (
     <div className={cn("flex gap-2.5 py-3", isPending && "opacity-50")}>
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
         {comment.profiles?.display_name?.charAt(0) ?? "?"}
       </div>
       <div className="flex-1 min-w-0">

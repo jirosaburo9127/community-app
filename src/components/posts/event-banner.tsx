@@ -31,9 +31,9 @@ export function EventBanner({ events }: { events: Event[] }) {
         {/* メインイベント */}
         <Link
           href={`/events/${featured.id}`}
-          className="group relative overflow-hidden rounded-xl border border-border bg-white sm:col-span-2 lg:col-span-2 transition-all hover:shadow-lg hover:-translate-y-0.5"
+          className="group relative overflow-hidden rounded-xl border border-border bg-white sm:col-span-2 lg:col-span-2 transition-all hover:shadow-md"
         >
-          <div className="relative aspect-[2.5/1] w-full overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10">
+          <div className="relative aspect-[2.5/1] w-full overflow-hidden bg-primary/5">
             {featured.image_url ? (
               <Image
                 src={featured.image_url}
@@ -74,7 +74,7 @@ export function EventBanner({ events }: { events: Event[] }) {
                 <Link
                   key={event.id}
                   href={`/events/${event.id}`}
-                  className="group flex gap-3 overflow-hidden rounded-xl border border-border bg-white p-3 transition-all hover:shadow-md hover:-translate-y-0.5"
+                  className="group flex gap-3 overflow-hidden rounded-xl border border-border bg-white p-3 transition-all hover:shadow-md"
                 >
                   <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-primary/8">
                     <span className="text-[10px] font-medium text-primary">

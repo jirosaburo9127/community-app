@@ -48,7 +48,7 @@ export function DigestNewMembers({ members }: { members: NewMember[] }) {
                 className="h-7 w-7 rounded-full object-cover"
               />
             ) : (
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[10px] font-bold text-white">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
                 {m.display_name.charAt(0)}
               </div>
             )}

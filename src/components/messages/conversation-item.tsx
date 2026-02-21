@@ -38,7 +38,7 @@ export function ConversationItem({
           className="h-11 w-11 shrink-0 rounded-full object-cover"
         />
       ) : (
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-white">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
           {otherUser.display_name.charAt(0)}
         </div>
       )}

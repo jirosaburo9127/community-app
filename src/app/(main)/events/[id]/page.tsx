@@ -54,7 +54,7 @@ export default async function EventDetailPage({
             className="h-40 w-full object-cover"
           />
         ) : (
-          <div className="h-24 bg-gradient-to-r from-primary to-accent" />
+          <div className="h-24 bg-primary" />
         )}
 
         <div className="p-6">
@@ -134,7 +134,7 @@ export default async function EventDetailPage({
                     className="h-6 w-6 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[10px] font-bold text-white">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
                     {reg.profiles?.display_name?.charAt(0) ?? "?"}
                   </div>
                 )}

@@ -61,7 +61,7 @@ export function NotificationItem({
           className="h-9 w-9 shrink-0 rounded-full object-cover"
         />
       ) : (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
           {actor?.display_name?.charAt(0) ?? "?"}
         </div>
       )}

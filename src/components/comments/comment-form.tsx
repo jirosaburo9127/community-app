@@ -28,7 +28,7 @@ export function CommentForm({ postId }: { postId: string }) {
       <button
         type="submit"
         disabled={isPending}
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-white shadow-sm transition-all hover:shadow-md disabled:opacity-50"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white shadow-sm transition-all hover:shadow-md disabled:opacity-50"
       >
         <Send size={15} />
       </button>

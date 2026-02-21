@@ -76,7 +76,7 @@ export default async function SearchPage({
                         className="h-10 w-10 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-white">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                         {member.display_name.charAt(0)}
                       </div>
                     )}

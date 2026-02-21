@@ -72,7 +72,7 @@ export default async function CourseDetailPage({
             className="h-40 w-full object-cover"
           />
         ) : (
-          <div className="flex h-40 items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+          <div className="flex h-40 items-center justify-center bg-primary/5">
             <BookOpen size={48} className="text-primary/30" />
           </div>
         )}
@@ -169,7 +169,7 @@ export default async function CourseDetailPage({
                   }
                   className={`flex items-center gap-3 rounded-xl border bg-white p-3.5 transition-all ${
                     enrollment
-                      ? "border-border hover:shadow-md hover:-translate-y-0.5"
+                      ? "border-border hover:shadow-md"
                       : "border-border/50 opacity-60 cursor-default"
                   }`}
                 >

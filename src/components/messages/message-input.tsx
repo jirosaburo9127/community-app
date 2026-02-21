@@ -56,7 +56,7 @@ export function MessageInput({
       <button
         type="submit"
         disabled={!body.trim() || sending}
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-primary to-accent text-white shadow-md transition-all hover:shadow-lg disabled:opacity-50"
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-md transition-all hover:shadow-md disabled:opacity-50"
       >
         <Send size={16} />
       </button>

@@ -25,7 +25,7 @@ export function PostCard({
   return (
     <Link
       href={`/posts/${post.id}`}
-      className="mb-4 block break-inside-avoid overflow-hidden rounded-xl bg-white border border-border transition-all hover:shadow-lg hover:shadow-gray-200/50 hover:-translate-y-0.5"
+      className="mb-4 block break-inside-avoid overflow-hidden rounded-xl bg-white border border-border transition-all hover:shadow-md hover:shadow-gray-200/50"
     >
       {post.image_urls?.[0] ? (
         <div className="relative aspect-video w-full overflow-hidden">
@@ -74,7 +74,7 @@ export function PostCard({
 
         <div className="flex items-center justify-between text-xs text-muted">
           <div className="flex items-center gap-1.5">
-            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[10px] font-bold text-white">
+            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
               {post.profiles?.display_name?.charAt(0) ?? "?"}
             </div>
             <span className="max-w-[80px] truncate font-medium">

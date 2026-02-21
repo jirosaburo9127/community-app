@@ -7,7 +7,7 @@ export function GroupCard({ group }: { group: Group }) {
   return (
     <Link
       href={`/groups/${group.slug}`}
-      className="flex gap-3.5 rounded-xl border border-border bg-white p-4 transition-all hover:shadow-md hover:-translate-y-0.5"
+      className="flex gap-3.5 rounded-xl border border-border bg-white p-4 transition-all hover:shadow-md"
     >
       {group.avatar_url ? (
         <Image
@@ -18,7 +18,7 @@ export function GroupCard({ group }: { group: Group }) {
           className="h-12 w-12 shrink-0 rounded-lg object-cover"
         />
       ) : (
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-lg font-bold text-white">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary text-lg font-bold text-white">
           {group.name.charAt(0)}
         </div>
       )}

@@ -8,8 +8,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "まちのわ",
-  description: "三重の若者が小さな挑戦を続けられるあたたかい居場所",
+  title: "nest",
+  description: "三重の若者が小さな挑戦を続けられる場所",
 };
 
 export default function RootLayout({
@@ -19,12 +19,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" suppressHydrationWarning>
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body className="antialiased">{children}</body>
     </html>
   );

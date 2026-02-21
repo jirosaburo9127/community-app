@@ -69,7 +69,7 @@ export default function NewChallengePage() {
         <button
           type="submit"
           disabled={submitting || !title.trim()}
-          className="w-full rounded-xl bg-gradient-to-r from-accent to-primary px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg disabled:opacity-50"
+          className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md disabled:opacity-50"
         >
           {submitting ? '作成中...' : 'チャレンジを作成'}
         </button>

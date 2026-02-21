@@ -68,11 +68,11 @@ export function Header({
 
         {/* ロゴ */}
         <Link href="/home" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-sm font-bold text-white">
-            わ
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
+            n
           </div>
-          <span className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            まちのわ
+          <span className="text-lg font-bold text-gray-900">
+            nest
           </span>
         </Link>
 
@@ -141,7 +141,7 @@ export function Header({
               href="/profile"
               className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-gray-100"
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                 {displayName.charAt(0)}
               </div>
               <span className="text-sm font-medium text-gray-700">{displayName}</span>

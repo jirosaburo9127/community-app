@@ -49,7 +49,7 @@ export default async function GroupDetailPage({
 
       {/* Group info */}
       <div className="overflow-hidden rounded-xl border border-border bg-white">
-        <div className="h-16 bg-gradient-to-r from-primary to-accent" />
+        <div className="h-16 bg-primary" />
         <div className="px-6 pb-6">
           <div className="flex items-end gap-4 -mt-8">
             {group.avatar_url ? (
@@ -61,7 +61,7 @@ export default async function GroupDetailPage({
                 className="h-16 w-16 rounded-xl border-4 border-white object-cover shadow-md"
               />
             ) : (
-              <div className="flex h-16 w-16 items-center justify-center rounded-xl border-4 border-white bg-gradient-to-br from-primary to-accent text-xl font-bold text-white shadow-md">
+              <div className="flex h-16 w-16 items-center justify-center rounded-xl border-4 border-white bg-primary text-xl font-bold text-white shadow-md">
                 {group.name.charAt(0)}
               </div>
             )}
@@ -113,7 +113,7 @@ export default async function GroupDetailPage({
                   href={`/groups/${slug}/rooms/${room.id}`}
                   className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 transition-colors hover:border-primary/30 hover:bg-primary/5"
                 >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 text-primary">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-primary">
                     <Hash size={14} />
                   </div>
                   <div className="min-w-0 flex-1">

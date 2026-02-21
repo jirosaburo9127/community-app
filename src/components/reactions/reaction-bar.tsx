@@ -35,7 +35,7 @@ export function ReactionBar({
           className={cn(
             "inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-medium transition-all",
             r.reacted
-              ? "border-primary/30 bg-primary/8 text-primary shadow-sm shadow-primary/10"
+              ? "border-primary/30 bg-primary/8 text-primary shadow-sm"
               : "border-border bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
           )}
         >

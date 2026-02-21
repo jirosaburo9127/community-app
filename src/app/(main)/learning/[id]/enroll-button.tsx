@@ -35,7 +35,7 @@ export function EnrollButton({ courseId }: { courseId: string }) {
     <button
       onClick={handleEnroll}
       disabled={pending}
-      className="w-full rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg disabled:opacity-50"
+      className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md disabled:opacity-50"
     >
       {pending ? "登録中..." : "このコースを受講する"}
     </button>

@@ -19,7 +19,7 @@ export function CourseCard({ course }: { course: Course }) {
   return (
     <Link
       href={`/learning/${course.id}`}
-      className="overflow-hidden rounded-xl border border-border bg-white transition-all hover:shadow-md hover:-translate-y-0.5"
+      className="overflow-hidden rounded-xl border border-border bg-white transition-all hover:shadow-md"
     >
       {course.cover_image_url ? (
         <Image
@@ -30,7 +30,7 @@ export function CourseCard({ course }: { course: Course }) {
           className="h-36 w-full object-cover"
         />
       ) : (
-        <div className="flex h-36 items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+        <div className="flex h-36 items-center justify-center bg-primary/5">
           <BookOpen size={40} className="text-primary/40" />
         </div>
       )}

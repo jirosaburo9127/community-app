@@ -79,11 +79,11 @@ function FeedItem({
   return (
     <Link
       href={`/posts/${post.id}`}
-      className="block rounded-xl bg-white p-3.5 transition-all hover:shadow-md hover:-translate-y-0.5"
+      className="block rounded-xl bg-white p-3.5 transition-all hover:shadow-md"
     >
       {/* ヘッダー: アバター + 名前 + 時刻 */}
       <div className="mb-2 flex items-center gap-2">
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[11px] font-bold text-white">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-white">
           {post.profiles?.display_name?.charAt(0) ?? "?"}
         </div>
         <span className="text-sm font-semibold text-gray-800">

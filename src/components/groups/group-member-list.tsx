@@ -97,7 +97,7 @@ export function GroupMemberList({
                 className="h-9 w-9 rounded-full object-cover"
               />
             ) : (
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-white">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                 {member.profiles?.display_name?.charAt(0) ?? "?"}
               </div>
             )}

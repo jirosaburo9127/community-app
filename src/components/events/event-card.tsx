@@ -21,7 +21,7 @@ export function EventCard({
   return (
     <Link
       href={`/events/${event.id}`}
-      className={`flex gap-3.5 rounded-xl border border-border bg-white p-4 transition-all hover:shadow-md hover:-translate-y-0.5 ${isPast ? "opacity-60" : ""}`}
+      className={`flex gap-3.5 rounded-xl border border-border bg-white p-4 transition-all hover:shadow-md ${isPast ? "opacity-60" : ""}`}
     >
       {/* Date box */}
       <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-lg bg-primary/8">

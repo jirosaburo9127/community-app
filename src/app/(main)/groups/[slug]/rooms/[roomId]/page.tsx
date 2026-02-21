@@ -40,7 +40,7 @@ export default async function RoomChatPage({
         >
           <ArrowLeft size={18} className="text-muted" />
         </Link>
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 text-primary">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-primary">
           <Hash size={16} />
         </div>
         <div>

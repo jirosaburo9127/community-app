@@ -76,7 +76,7 @@ export function Sidebar({
         {/* 投稿ボタン */}
         <Link
           href="/posts/new"
-          className="flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-accent px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:-translate-y-0.5"
+          className="flex items-center justify-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary-dark hover:shadow-md"
         >
           <PenSquare size={16} />
           投稿する

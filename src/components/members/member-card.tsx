@@ -20,7 +20,7 @@ export function MemberCard({ member }: { member: Profile }) {
   return (
     <Link
       href={`/members/${member.id}`}
-      className="flex items-start gap-3.5 rounded-xl border border-border bg-white p-4 transition-all hover:shadow-md hover:-translate-y-0.5"
+      className="flex items-start gap-3.5 rounded-xl border border-border bg-white p-4 transition-all hover:shadow-md"
     >
       {member.avatar_url ? (
         <Image
@@ -31,7 +31,7 @@ export function MemberCard({ member }: { member: Profile }) {
           className="h-12 w-12 shrink-0 rounded-full object-cover"
         />
       ) : (
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-lg font-bold text-white">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-white">
           {member.display_name.charAt(0)}
         </div>
       )}

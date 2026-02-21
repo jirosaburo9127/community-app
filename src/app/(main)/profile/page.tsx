@@ -83,7 +83,7 @@ export default async function ProfilePage() {
     <div className="mx-auto max-w-lg space-y-5">
       {/* Profile header with gradient */}
       <div className="overflow-hidden rounded-xl border border-border bg-white">
-        <div className="h-24 bg-gradient-to-r from-primary to-accent" />
+        <div className="h-24 bg-primary" />
         <div className="px-6 pb-6">
           <div className="flex flex-col items-center -mt-12">
             {profile.avatar_url ? (
@@ -95,7 +95,7 @@ export default async function ProfilePage() {
                 className="h-22 w-22 rounded-full border-4 border-white object-cover shadow-md"
               />
             ) : (
-              <div className="flex h-22 w-22 items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-primary to-accent text-2xl font-bold text-white shadow-md">
+              <div className="flex h-22 w-22 items-center justify-center rounded-full border-4 border-white bg-primary text-2xl font-bold text-white shadow-md">
                 {profile.display_name.charAt(0)}
               </div>
             )}

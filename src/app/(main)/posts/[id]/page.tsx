@@ -76,7 +76,7 @@ export default async function PostDetailPage({
           <h1 className="mb-3 text-xl font-bold text-gray-900">{post.title}</h1>
 
           <div className="mb-5 flex items-center gap-2.5 text-sm text-muted">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
               {post.profiles?.display_name?.charAt(0) ?? "?"}
             </div>
             <span className="font-medium text-gray-700">{post.profiles?.display_name}</span>
