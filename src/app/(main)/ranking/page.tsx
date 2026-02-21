@@ -10,7 +10,7 @@ const medalColors = [
 ];
 
 export default async function RankingPage() {
-  const ranking = await getRanking(10);
+  const ranking = await getRanking();
 
   return (
     <div className="mx-auto max-w-lg">

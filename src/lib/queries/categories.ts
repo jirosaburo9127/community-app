@@ -1,7 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-
-// カテゴリデータのインメモリキャッシュ（プロセス単位、60秒）
-let cachedCategories: { data: Awaited<ReturnType<typeof fetchCategories>>; expiry: number } | null = null;
+import { createTTLCache } from "@/lib/cache";
 
 async function fetchCategories() {
   const supabase = await createClient();
@@ -17,12 +15,4 @@ async function fetchCategories() {
   return data;
 }
 
-export async function getCategories() {
-  const now = Date.now();
-  if (cachedCategories && cachedCategories.expiry > now) {
-    return cachedCategories.data;
-  }
-  const data = await fetchCategories();
-  cachedCategories = { data, expiry: now + 60_000 };
-  return data;
-}
+export const getCategories = createTTLCache(fetchCategories, 60_000);

@@ -1,14 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
+import { createTTLCache } from "@/lib/cache";
 import type { Profile } from "@/lib/types";
 
-export async function getRanking(limit = 10): Promise<Profile[]> {
+async function fetchRanking(): Promise<Profile[]> {
   const supabase = await createClient();
 
   const { data } = await supabase
     .from("profiles")
     .select("*")
     .order("total_points", { ascending: false })
-    .limit(limit);
+    .limit(10);
 
   return data ?? [];
 }
+
+export const getRanking = createTTLCache(fetchRanking, 60_000);

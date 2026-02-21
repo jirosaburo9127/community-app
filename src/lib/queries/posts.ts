@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createTTLCache } from "@/lib/cache";
 import { POSTS_PER_PAGE } from "@/lib/constants";
 import { getCategories } from "./categories";
 
@@ -61,7 +62,7 @@ export async function getEventPosts(limit = 5) {
   return data;
 }
 
-export async function getPinnedAnnouncements() {
+async function fetchPinnedAnnouncements() {
   const categoryId = await getCategoryIdBySlug("management");
   if (!categoryId) return [];
 
@@ -78,6 +79,8 @@ export async function getPinnedAnnouncements() {
   if (error) return [];
   return data;
 }
+
+export const getPinnedAnnouncements = createTTLCache(fetchPinnedAnnouncements, 60_000);
 
 export async function getRecentPostsByCategory(limit = 50) {
   const supabase = await createClient();

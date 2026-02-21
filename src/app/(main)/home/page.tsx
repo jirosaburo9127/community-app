@@ -26,7 +26,7 @@ export default async function HomePage({
       await Promise.all([
         getCategories(),
         getPosts({ categorySlug: category }),
-        getUpcomingEvents(4),
+        getUpcomingEvents(),
         getPinnedAnnouncements(),
       ]);
 
@@ -51,7 +51,7 @@ export default async function HomePage({
     await Promise.all([
       getCategories(),
       getRecentPostsByCategory(),
-      getUpcomingEvents(4),
+      getUpcomingEvents(),
       getPinnedAnnouncements(),
     ]);
 

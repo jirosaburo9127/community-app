@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createTTLCache } from "@/lib/cache";
 
 export async function getEvents({
   year,
@@ -28,7 +29,7 @@ export async function getEvents({
   return data;
 }
 
-export async function getUpcomingEvents(limit = 5) {
+async function fetchUpcomingEvents() {
   const supabase = await createClient();
   const now = new Date().toISOString();
 
@@ -37,11 +38,13 @@ export async function getUpcomingEvents(limit = 5) {
     .select("*, profiles(*)")
     .gte("event_date", now)
     .order("event_date", { ascending: true })
-    .limit(limit);
+    .limit(5);
 
   if (error) return [];
   return data;
 }
+
+export const getUpcomingEvents = createTTLCache(fetchUpcomingEvents, 30_000);
 
 export async function getEvent(id: string) {
   const supabase = await createClient();
