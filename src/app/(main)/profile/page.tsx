@@ -1,5 +1,6 @@
 import { getMyProfile } from "@/lib/queries/profile";
 import { getUserBadges } from "@/lib/queries/badges";
+import { getFollowCounts } from "@/lib/queries/follows";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/lib/actions/auth";
 import { ActivityTimeline } from "@/components/profile/activity-timeline";
@@ -16,6 +17,7 @@ import {
   MessageCircle,
   Settings,
   Twitter,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,7 +45,10 @@ export default async function ProfilePage() {
 
   const supabase = await createClient();
 
-  const badges = await getUserBadges(profile.id);
+  const [badges, followCounts] = await Promise.all([
+    getUserBadges(profile.id),
+    getFollowCounts(profile.id),
+  ]);
 
   const [
     { count: postCount },
@@ -124,6 +129,16 @@ export default async function ProfilePage() {
               </p>
             )}
             <p className="mt-1.5 text-xs text-muted">{memberSince}に登録</p>
+
+            {/* Follow counts */}
+            <div className="mt-2 flex items-center gap-4 text-sm">
+              <span className="text-gray-600">
+                <span className="font-bold text-gray-900">{followCounts.followers}</span> フォロワー
+              </span>
+              <span className="text-gray-600">
+                <span className="font-bold text-gray-900">{followCounts.following}</span> フォロー中
+              </span>
+            </div>
 
             {/* Social links */}
             {socialLinks.length > 0 && (

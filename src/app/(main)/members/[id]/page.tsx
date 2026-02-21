@@ -1,11 +1,13 @@
 import { getMember } from "@/lib/queries/members";
 import { getUserBadges } from "@/lib/queries/badges";
+import { isFollowing, getFollowCounts } from "@/lib/queries/follows";
 import { ActivityTimeline } from "@/components/profile/activity-timeline";
 import { BadgeList } from "@/components/badges/badge-list";
+import { FollowButton } from "@/components/follows/follow-button";
 import { DmButton } from "@/components/messages/dm-button";
 import { createClient } from "@/lib/supabase/server";
 import type { Post } from "@/lib/types";
-import { ArrowLeft, Building2, ExternalLink, Github, Linkedin, Twitter } from "lucide-react";
+import { ArrowLeft, Building2, ExternalLink, Github, Linkedin, Twitter, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,10 +35,14 @@ export default async function MemberDetailPage({
   const member = await getMember(id);
   if (!member) notFound();
 
-  const badges = await getUserBadges(member.id);
-
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+
+  const [badges, followCounts, following] = await Promise.all([
+    getUserBadges(member.id),
+    getFollowCounts(member.id),
+    user ? isFollowing(member.id) : Promise.resolve(false),
+  ]);
 
   const { data: posts } = await supabase
     .from("posts")
@@ -100,6 +106,27 @@ export default async function MemberDetailPage({
               <p className="mt-3 text-center text-sm text-gray-600">
                 {member.bio}
               </p>
+            )}
+
+            {/* Follow counts */}
+            <div className="mt-3 flex items-center gap-4 text-sm">
+              <span className="text-gray-600">
+                <span className="font-bold text-gray-900">{followCounts.followers}</span> フォロワー
+              </span>
+              <span className="text-gray-600">
+                <span className="font-bold text-gray-900">{followCounts.following}</span> フォロー中
+              </span>
+            </div>
+
+            {/* Follow button */}
+            {user && (
+              <div className="mt-3">
+                <FollowButton
+                  targetUserId={member.id}
+                  currentUserId={user.id}
+                  initialFollowing={following}
+                />
+              </div>
             )}
           </div>
 

@@ -6,9 +6,11 @@ import { FileText } from "lucide-react";
 export function PostGrid({
   posts,
   reactionsMap,
+  pollPostIds,
 }: {
   posts: Post[];
   reactionsMap?: Map<string, ReactionCount[]>;
+  pollPostIds?: Set<string>;
 }) {
   if (posts.length === 0) {
     return (
@@ -29,6 +31,7 @@ export function PostGrid({
           key={post.id}
           post={post}
           reactions={reactionsMap?.get(post.id)}
+          hasPoll={pollPostIds?.has(post.id)}
         />
       ))}
     </div>

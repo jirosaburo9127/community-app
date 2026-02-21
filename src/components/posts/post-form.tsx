@@ -2,8 +2,9 @@
 
 import { createClient } from "@/lib/supabase/client";
 import type { Category } from "@/lib/types";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { PollFormSection } from "@/components/polls/poll-form-section";
 
 export function PostForm({
   categories,
@@ -17,6 +18,7 @@ export function PostForm({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const pollRef = useRef<{ question: string; options: string[] } | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -80,6 +82,26 @@ export function PostForm({
       if (insertError) {
         setError(insertError.message);
         return;
+      }
+
+      // Create poll if provided
+      const pollData = pollRef.current;
+      if (pollData && pollData.question.trim() && pollData.options.every((o) => o.trim())) {
+        const { data: poll } = await supabase
+          .from("polls")
+          .insert({ post_id: post.id, question: pollData.question })
+          .select()
+          .single();
+
+        if (poll) {
+          await supabase.from("poll_options").insert(
+            pollData.options.map((label, i) => ({
+              poll_id: poll.id,
+              label,
+              sort_order: i,
+            }))
+          );
+        }
       }
 
       router.push(groupSlug ? `/groups/${groupSlug}` : `/posts/${post.id}`);
@@ -156,6 +178,7 @@ export function PostForm({
           className="block w-full text-sm text-muted file:mr-3 file:rounded-lg file:border-0 file:bg-primary/8 file:px-4 file:py-2.5 file:text-sm file:font-medium file:text-primary file:cursor-pointer"
         />
       </div>
+      <PollFormSection onPollChange={(poll) => { pollRef.current = poll; }} />
       <button
         type="submit"
         disabled={pending}

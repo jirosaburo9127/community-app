@@ -148,7 +148,7 @@ export type Notification = {
   id: string;
   user_id: string;
   actor_id: string;
-  type: 'comment' | 'reaction';
+  type: 'comment' | 'reaction' | 'follow';
   post_id: string | null;
   comment_id: string | null;
   is_read: boolean;
@@ -156,6 +156,37 @@ export type Notification = {
   // Joined
   profiles?: Profile;
   posts?: { id: string; title: string };
+};
+
+export type Poll = {
+  id: string;
+  post_id: string;
+  question: string;
+  created_at: string;
+  poll_options?: PollOption[];
+};
+
+export type PollOption = {
+  id: string;
+  poll_id: string;
+  label: string;
+  sort_order: number;
+  vote_count: number;
+};
+
+export type PollVote = {
+  id: string;
+  poll_option_id: string;
+  user_id: string;
+  created_at: string;
+};
+
+export type Follow = {
+  id: string;
+  follower_id: string;
+  following_id: string;
+  created_at: string;
+  profiles?: Profile;
 };
 
 export type Conversation = {
