@@ -48,6 +48,7 @@ RETURNS TRIGGER AS $$
 DECLARE
   v_user_id UUID;
   v_count INT;
+  v_points INT;
 BEGIN
   -- 対象ユーザーの特定
   IF TG_TABLE_NAME = 'posts' THEN
@@ -102,12 +103,13 @@ BEGIN
     INSERT INTO user_badges (user_id, badge_id) VALUES (v_user_id, 'first_reaction') ON CONFLICT DO NOTHING;
   END IF;
 
-  -- points badges
-  IF TG_TABLE_NAME = 'profiles' AND NEW.total_points IS NOT NULL THEN
-    IF NEW.total_points >= 100 THEN
+  -- points badges (to_jsonb to avoid field resolution error on non-profiles tables)
+  IF TG_TABLE_NAME = 'profiles' THEN
+    v_points := COALESCE((to_jsonb(NEW)->>'total_points')::int, 0);
+    IF v_points >= 100 THEN
       INSERT INTO user_badges (user_id, badge_id) VALUES (v_user_id, 'points_100') ON CONFLICT DO NOTHING;
     END IF;
-    IF NEW.total_points >= 500 THEN
+    IF v_points >= 500 THEN
       INSERT INTO user_badges (user_id, badge_id) VALUES (v_user_id, 'points_500') ON CONFLICT DO NOTHING;
     END IF;
   END IF;
@@ -131,8 +133,10 @@ BEGIN
   END IF;
 
   -- course_completed
-  IF TG_TABLE_NAME = 'course_enrollments' AND NEW.completed_at IS NOT NULL THEN
-    INSERT INTO user_badges (user_id, badge_id) VALUES (v_user_id, 'course_completed') ON CONFLICT DO NOTHING;
+  IF TG_TABLE_NAME = 'course_enrollments' THEN
+    IF (to_jsonb(NEW)->>'completed_at') IS NOT NULL THEN
+      INSERT INTO user_badges (user_id, badge_id) VALUES (v_user_id, 'course_completed') ON CONFLICT DO NOTHING;
+    END IF;
   END IF;
 
   -- group_creator
