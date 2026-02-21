@@ -66,34 +66,6 @@ export type Challenge = {
   created_at: string;
 };
 
-export type StartupStage = 'idea' | 'mvp' | 'seed' | 'series_a';
-
-export type Startup = {
-  id: string;
-  name: string;
-  slug: string;
-  logo_url: string | null;
-  description: string;
-  stage: StartupStage;
-  industry: string;
-  website_url: string;
-  creator_id: string;
-  created_at: string;
-  updated_at: string;
-  // Joined
-  profiles?: Profile;
-  member_count?: number;
-};
-
-export type StartupMember = {
-  id: string;
-  startup_id: string;
-  user_id: string;
-  role: string;
-  created_at: string;
-  profiles?: Profile;
-};
-
 export type Event = {
   id: string;
   title: string;
@@ -132,7 +104,6 @@ export type Group = {
   updated_at: string;
   profiles?: Profile;
   member_count?: number;
-  startups?: Startup;
 };
 
 export type GroupMember = {
@@ -148,7 +119,7 @@ export type Notification = {
   id: string;
   user_id: string;
   actor_id: string;
-  type: 'comment' | 'reaction' | 'follow';
+  type: 'comment' | 'reaction';
   post_id: string | null;
   comment_id: string | null;
   is_read: boolean;
@@ -156,37 +127,6 @@ export type Notification = {
   // Joined
   profiles?: Profile;
   posts?: { id: string; title: string };
-};
-
-export type Poll = {
-  id: string;
-  post_id: string;
-  question: string;
-  created_at: string;
-  poll_options?: PollOption[];
-};
-
-export type PollOption = {
-  id: string;
-  poll_id: string;
-  label: string;
-  sort_order: number;
-  vote_count: number;
-};
-
-export type PollVote = {
-  id: string;
-  poll_option_id: string;
-  user_id: string;
-  created_at: string;
-};
-
-export type Follow = {
-  id: string;
-  follower_id: string;
-  following_id: string;
-  created_at: string;
-  profiles?: Profile;
 };
 
 export type Conversation = {
@@ -262,24 +202,6 @@ export type LessonCompletion = {
   completed_at: string;
 };
 
-export type JobCategory = 'engineer' | 'designer' | 'marketer' | 'business' | 'other';
-
-export type Job = {
-  id: string;
-  title: string;
-  description: string;
-  category: JobCategory;
-  tags: string[];
-  startup_id: string | null;
-  author_id: string;
-  status: 'open' | 'closed';
-  created_at: string;
-  updated_at: string;
-  // Joined
-  profiles?: Profile;
-  startups?: Startup;
-};
-
 export type GroupRoom = {
   id: string;
   group_id: string;
@@ -314,41 +236,3 @@ export type UserBadge = {
   badge_definitions?: BadgeDefinition;
 };
 
-export type MentorProfile = {
-  id: string;
-  user_id: string;
-  expertise_areas: string[];
-  bio: string;
-  max_mentees: number;
-  is_available: boolean;
-  created_at: string;
-  updated_at: string;
-  profiles?: Profile;
-  accepted_count?: number;
-};
-
-export type MentoringRequest = {
-  id: string;
-  mentor_id: string;
-  mentee_id: string;
-  message: string;
-  status: 'pending' | 'accepted' | 'rejected';
-  created_at: string;
-  updated_at: string;
-  mentor_profiles?: MentorProfile & { profiles?: Profile };
-  profiles?: Profile;
-};
-
-export type ResourceCategory = 'template' | 'pitch' | 'tech_article' | 'tool' | 'book' | 'other';
-
-export type Resource = {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  category: ResourceCategory;
-  author_id: string;
-  created_at: string;
-  updated_at: string;
-  profiles?: Profile;
-};

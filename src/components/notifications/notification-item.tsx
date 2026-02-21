@@ -1,5 +1,5 @@
 import type { Notification } from "@/lib/types";
-import { MessageCircle, Heart, UserPlus } from "lucide-react";
+import { MessageCircle, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
@@ -15,11 +15,6 @@ const typeConfig = {
     icon: Heart,
     label: "がリアクションしました",
     color: "text-pink-500",
-  },
-  follow: {
-    icon: UserPlus,
-    label: "があなたをフォローしました",
-    color: "text-green-500",
   },
 } as const;
 
@@ -38,9 +33,7 @@ export function NotificationItem({
     locale: ja,
   });
 
-  const href = notification.type === "follow"
-    ? `/members/${notification.actor_id}`
-    : post ? `/posts/${post.id}` : "#";
+  const href = post ? `/posts/${post.id}` : "#";
 
   return (
     <Link

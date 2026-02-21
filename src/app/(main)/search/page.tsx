@@ -1,7 +1,6 @@
 import { SearchForm } from "@/components/search/search-form";
-import { searchPosts, searchStartups, searchMembers } from "@/lib/queries/search";
+import { searchPosts, searchMembers } from "@/lib/queries/search";
 import { PostCard } from "@/components/posts/post-card";
-import { StartupCard } from "@/components/startups/startup-card";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,18 +28,16 @@ export default async function SearchPage({
   const { q } = await searchParams;
 
   let posts: any[] = [];
-  let startups: any[] = [];
   let members: any[] = [];
 
   if (q) {
-    [posts, startups, members] = await Promise.all([
+    [posts, members] = await Promise.all([
       searchPosts(q),
-      searchStartups(q),
       searchMembers(q),
     ]);
   }
 
-  const totalResults = posts.length + startups.length + members.length;
+  const totalResults = posts.length + members.length;
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -113,20 +110,6 @@ export default async function SearchPage({
               <div className="columns-1 sm:columns-2 gap-4">
                 {posts.map((post) => (
                   <PostCard key={post.id} post={post} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Startups */}
-          {startups.length > 0 && (
-            <div className="mb-6">
-              <h2 className="mb-3 text-sm font-semibold text-gray-900">
-                スタートアップ ({startups.length})
-              </h2>
-              <div className="space-y-3">
-                {startups.map((startup) => (
-                  <StartupCard key={startup.id} startup={startup} />
                 ))}
               </div>
             </div>

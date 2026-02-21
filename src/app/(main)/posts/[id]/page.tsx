@@ -1,11 +1,9 @@
 import { CommentForm } from "@/components/comments/comment-form";
 import { CommentList } from "@/components/comments/comment-list";
-import { PollDisplay } from "@/components/polls/poll-display";
 import { BookmarkButton } from "@/components/reactions/bookmark-button";
 import { ReactionBar } from "@/components/reactions/reaction-bar";
 import { isBookmarked } from "@/lib/queries/bookmarks";
 import { getComments } from "@/lib/queries/comments";
-import { getPollByPostId, getUserVote } from "@/lib/queries/polls";
 import { getPost } from "@/lib/queries/posts";
 import { getReactionsForPost } from "@/lib/queries/reactions";
 import { createClient } from "@/lib/supabase/server";
@@ -30,14 +28,11 @@ export default async function PostDetailPage({
     notFound();
   }
 
-  const [reactions, comments, bookmarked, poll] = await Promise.all([
+  const [reactions, comments, bookmarked] = await Promise.all([
     getReactionsForPost(id),
     getComments(id),
     isBookmarked(id),
-    getPollByPostId(id),
   ]);
-
-  const userVote = poll ? await getUserVote(poll.id) : null;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -91,13 +86,6 @@ export default async function PostDetailPage({
           <div className="mb-6 whitespace-pre-wrap text-sm leading-relaxed text-gray-700">
             {post.body}
           </div>
-
-          {poll && (
-            <PollDisplay
-              poll={poll}
-              votedOptionId={userVote?.poll_option_id ?? null}
-            />
-          )}
 
           <div className="flex items-center justify-between border-t border-border pt-4 mt-4">
             <ReactionBar postId={post.id} reactions={reactions} />

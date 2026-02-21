@@ -10,62 +10,15 @@ import {
 } from "@/lib/queries/posts";
 import { getUpcomingEvents } from "@/lib/queries/events";
 import { getReactionsForPosts } from "@/lib/queries/reactions";
-import { getFollowingIds } from "@/lib/queries/follows";
-import { createClient } from "@/lib/supabase/server";
 import { BarChart3, PenSquare } from "lucide-react";
 import Link from "next/link";
 
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; tab?: string }>;
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const { category, tab } = await searchParams;
-
-  // 「フォロー中」タブ
-  if (tab === "following") {
-    const followingIds = await getFollowingIds();
-
-    let posts: Awaited<ReturnType<typeof getPosts>> = [];
-    if (followingIds.length > 0) {
-      const supabase = await createClient();
-      const { data } = await supabase
-        .from("posts")
-        .select("*, profiles(*), categories(*)")
-        .is("group_id", null)
-        .in("author_id", followingIds)
-        .order("created_at", { ascending: false })
-        .limit(30);
-      posts = data ?? [];
-    }
-
-    const postIds = posts.map((p) => p.id);
-    const reactionsMap =
-      postIds.length > 0 ? await getReactionsForPosts(postIds) : new Map();
-
-    return (
-      <>
-        <MobilePostButton />
-        <DigestBanner />
-        <FeedTabs active="following" />
-        {posts.length > 0 ? (
-          <PostGrid posts={posts} reactionsMap={reactionsMap} />
-        ) : (
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted">
-              フォロー中のメンバーの投稿がここに表示されます
-            </p>
-            <Link
-              href="/members"
-              className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-            >
-              メンバーを探す
-            </Link>
-          </div>
-        )}
-      </>
-    );
-  }
+  const { category } = await searchParams;
 
   // カテゴリ指定時は従来のグリッド表示
   if (category) {
@@ -125,8 +78,6 @@ export default async function HomePage({
       <AnnouncementBanner announcements={announcements} />
       <EventBanner events={upcomingEvents} />
 
-      <FeedTabs active="all" />
-
       <div className="space-y-2">
         {categories
           .filter((cat) => postsByCategory.has(cat.id))
@@ -172,32 +123,5 @@ function DigestBanner() {
       </div>
       <span className="text-xs font-medium text-accent">見る &rarr;</span>
     </Link>
-  );
-}
-
-function FeedTabs({ active }: { active: "all" | "following" }) {
-  return (
-    <div className="mb-4 flex gap-1 rounded-lg bg-surface p-1">
-      <Link
-        href="/home"
-        className={`flex-1 rounded-md px-3 py-1.5 text-center text-sm font-medium transition-colors ${
-          active === "all"
-            ? "bg-white text-gray-900 shadow-sm"
-            : "text-muted hover:text-gray-700"
-        }`}
-      >
-        すべて
-      </Link>
-      <Link
-        href="/home?tab=following"
-        className={`flex-1 rounded-md px-3 py-1.5 text-center text-sm font-medium transition-colors ${
-          active === "following"
-            ? "bg-white text-gray-900 shadow-sm"
-            : "text-muted hover:text-gray-700"
-        }`}
-      >
-        フォロー中
-      </Link>
-    </div>
   );
 }

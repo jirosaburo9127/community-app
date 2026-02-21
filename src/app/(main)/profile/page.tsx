@@ -1,6 +1,5 @@
 import { getMyProfile } from "@/lib/queries/profile";
 import { getUserBadges } from "@/lib/queries/badges";
-import { getFollowCounts } from "@/lib/queries/follows";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/lib/actions/auth";
 import { ActivityTimeline } from "@/components/profile/activity-timeline";
@@ -17,7 +16,6 @@ import {
   MessageCircle,
   Settings,
   Twitter,
-  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,15 +43,11 @@ export default async function ProfilePage() {
 
   const supabase = await createClient();
 
-  const [badges, followCounts] = await Promise.all([
-    getUserBadges(profile.id),
-    getFollowCounts(profile.id),
-  ]);
+  const badges = await getUserBadges(profile.id);
 
   const [
     { count: postCount },
     { count: commentCount },
-    { data: startups },
     { data: upcomingEvents },
   ] = await Promise.all([
     supabase
@@ -64,10 +58,6 @@ export default async function ProfilePage() {
       .from("comments")
       .select("*", { count: "exact", head: true })
       .eq("author_id", profile.id),
-    supabase
-      .from("startup_members")
-      .select("startup_id, role, startups(id, name, slug, logo_url, stage)")
-      .eq("user_id", profile.id),
     supabase
       .from("event_registrations")
       .select("event_id, events(id, title, event_date, location)")
@@ -129,16 +119,6 @@ export default async function ProfilePage() {
               </p>
             )}
             <p className="mt-1.5 text-xs text-muted">{memberSince}に登録</p>
-
-            {/* Follow counts */}
-            <div className="mt-2 flex items-center gap-4 text-sm">
-              <span className="text-gray-600">
-                <span className="font-bold text-gray-900">{followCounts.followers}</span> フォロワー
-              </span>
-              <span className="text-gray-600">
-                <span className="font-bold text-gray-900">{followCounts.following}</span> フォロー中
-              </span>
-            </div>
 
             {/* Social links */}
             {socialLinks.length > 0 && (
@@ -224,49 +204,6 @@ export default async function ProfilePage() {
           </div>
         </div>
       </div>
-
-      {/* Startups */}
-      {startups && startups.length > 0 && (
-        <div className="rounded-xl border border-border bg-white">
-          <div className="px-5 py-4 border-b border-border">
-            <h3 className="text-sm font-semibold text-gray-900">所属スタートアップ</h3>
-          </div>
-          <div className="divide-y divide-border">
-            {startups.map((sm: any) => {
-              const s = sm.startups;
-              if (!s) return null;
-              return (
-                <Link
-                  key={s.id}
-                  href={`/startups/${s.slug}`}
-                  className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-gray-50"
-                >
-                  {s.logo_url ? (
-                    <Image
-                      src={s.logo_url}
-                      alt={s.name}
-                      width={36}
-                      height={36}
-                      className="h-9 w-9 rounded-lg object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">
-                      {s.name.charAt(0)}
-                    </div>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {s.name}
-                    </p>
-                    <p className="text-xs text-muted">{sm.role}</p>
-                  </div>
-                  <ExternalLink size={14} className="text-muted" />
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Upcoming events */}
       {upcomingEvents && upcomingEvents.length > 0 && (

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { getCategoryColor } from "@/lib/constants";
 import type { Post } from "@/lib/types";
 import type { ReactionCount } from "@/lib/queries/reactions";
-import { BarChart3, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
@@ -11,11 +11,9 @@ import { ja } from "date-fns/locale";
 export function PostCard({
   post,
   reactions,
-  hasPoll,
 }: {
   post: Post;
   reactions?: ReactionCount[];
-  hasPoll?: boolean;
 }) {
   const timeAgo = formatDistanceToNow(new Date(post.created_at), {
     addSuffix: true,
@@ -48,12 +46,6 @@ export function PostCard({
             <span className={cn("inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium", catColor.bg, catColor.text)}>
               <span>{post.categories.icon_emoji}</span>
               {post.categories.name}
-            </span>
-          )}
-          {hasPoll && (
-            <span className="inline-flex items-center gap-0.5 rounded-md bg-accent/10 px-1.5 py-0.5 text-[10px] font-medium text-accent">
-              <BarChart3 size={10} />
-              投票
             </span>
           )}
         </div>

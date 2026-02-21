@@ -34,32 +34,3 @@ export function getCategoryColor(slug: string | undefined) {
 
 export const POSTS_PER_PAGE = 12;
 
-export const JOB_CATEGORIES = [
-  { value: "engineer", label: "エンジニア", emoji: "💻" },
-  { value: "designer", label: "デザイナー", emoji: "🎨" },
-  { value: "marketer", label: "マーケター", emoji: "📈" },
-  { value: "business", label: "ビジネス", emoji: "💼" },
-  { value: "other", label: "その他", emoji: "🔧" },
-] as const;
-
-export const MENTORING_EXPERTISE_AREAS = [
-  { value: "product", label: "プロダクト開発", emoji: "🛠️" },
-  { value: "marketing", label: "マーケティング", emoji: "📣" },
-  { value: "fundraising", label: "資金調達", emoji: "💰" },
-  { value: "sales", label: "営業・セールス", emoji: "🤝" },
-  { value: "design", label: "デザイン・UX", emoji: "🎨" },
-  { value: "engineering", label: "エンジニアリング", emoji: "💻" },
-  { value: "management", label: "組織・マネジメント", emoji: "👥" },
-  { value: "legal", label: "法務・知財", emoji: "⚖️" },
-  { value: "global", label: "海外展開", emoji: "🌏" },
-  { value: "other", label: "その他", emoji: "📌" },
-] as const;
-
-export const RESOURCE_CATEGORIES = [
-  { value: "template", label: "テンプレート", emoji: "📝" },
-  { value: "pitch", label: "ピッチ資料", emoji: "📊" },
-  { value: "tech_article", label: "技術記事", emoji: "💻" },
-  { value: "tool", label: "ツール", emoji: "🔧" },
-  { value: "book", label: "書籍", emoji: "📚" },
-  { value: "other", label: "その他", emoji: "📌" },
-] as const;
