@@ -42,7 +42,7 @@ export default async function HomePage({
         <DigestBanner />
         <AnnouncementBanner announcements={announcements} />
         <EventBanner events={upcomingEvents} />
-        <PostGrid posts={posts} reactionsMap={reactionsMap} />
+        <PostGrid posts={posts} />
       </>
     );
   }

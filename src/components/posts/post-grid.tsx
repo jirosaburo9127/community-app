@@ -1,14 +1,11 @@
 import type { Post } from "@/lib/types";
-import type { ReactionCount } from "@/lib/queries/reactions";
 import { PostCard } from "./post-card";
 import { FileText } from "lucide-react";
 
 export function PostGrid({
   posts,
-  reactionsMap,
 }: {
   posts: Post[];
-  reactionsMap?: Map<string, ReactionCount[]>;
 }) {
   if (posts.length === 0) {
     return (
@@ -23,12 +20,11 @@ export function PostGrid({
   }
 
   return (
-    <div className="columns-2 gap-4 sm:columns-3">
+    <div className="columns-2 gap-3 sm:columns-3">
       {posts.map((post) => (
         <PostCard
           key={post.id}
           post={post}
-          reactions={reactionsMap?.get(post.id)}
         />
       ))}
     </div>

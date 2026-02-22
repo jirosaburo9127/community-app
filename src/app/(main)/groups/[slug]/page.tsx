@@ -155,7 +155,7 @@ export default async function GroupDetailPage({
             </Link>
           )}
         </div>
-        <PostGrid posts={posts} reactionsMap={reactionsMap} />
+        <PostGrid posts={posts} />
       </div>
     </div>
   );
