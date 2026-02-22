@@ -5,6 +5,8 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 
+const SHOW_MORE_THRESHOLD = 5;
+
 export function CategorySection({
   category,
   posts,
@@ -30,13 +32,14 @@ export function CategorySection({
         {posts.map((post) => (
           <HorizontalCard key={post.id} post={post} />
         ))}
-        {/* もっと見るカード */}
-        <Link
-          href={`/home?category=${category.slug}`}
-          className="flex w-36 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-900"
-        >
-          もっとみる
-        </Link>
+        {posts.length >= SHOW_MORE_THRESHOLD && (
+          <Link
+            href={`/home?category=${category.slug}`}
+            className="flex w-36 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-900"
+          >
+            もっとみる
+          </Link>
+        )}
       </div>
     </section>
   );
@@ -48,27 +51,25 @@ function HorizontalCard({ post }: { post: Post }) {
     locale: ja,
   });
 
+  const hasImage = !!post.image_urls?.[0];
+
   return (
     <Link
       href={`/posts/${post.id}`}
       className="w-44 shrink-0 overflow-hidden rounded-lg border border-border bg-white transition-all hover:shadow-md sm:w-48"
     >
-      {/* 画像 */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-        {post.image_urls?.[0] ? (
+      {/* 画像（ある場合のみ） */}
+      {hasImage && (
+        <div className="relative aspect-[4/3] w-full overflow-hidden">
           <Image
-            src={post.image_urls[0]}
+            src={post.image_urls![0]}
             alt={post.title}
             fill
             className="object-cover"
             sizes="200px"
           />
-        ) : (
-          <div className="flex h-full items-center justify-center text-2xl text-gray-300">
-            {post.categories?.icon_emoji ?? "📝"}
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* テキスト */}
       <div className="p-2.5">
