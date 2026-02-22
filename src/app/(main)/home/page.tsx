@@ -63,7 +63,13 @@ export default async function HomePage({
       <EventBanner events={upcomingEvents} />
 
       <div className="space-y-8">
-        {categories
+        {[...categories]
+          .sort((a, b) => {
+            // スタートアップニュースを最後に
+            if (a.slug === "startup-news") return 1;
+            if (b.slug === "startup-news") return -1;
+            return 0;
+          })
           .filter((cat) => postsByCategory.has(cat.id))
           .map((cat) => (
             <CategorySection
