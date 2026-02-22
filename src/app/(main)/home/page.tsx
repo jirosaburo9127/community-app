@@ -9,7 +9,6 @@ import {
   getRecentPostsByCategory,
 } from "@/lib/queries/posts";
 import { getUpcomingEvents } from "@/lib/queries/events";
-import { getReactionsForPosts } from "@/lib/queries/reactions";
 import { BarChart3, PenSquare } from "lucide-react";
 import Link from "next/link";
 
@@ -22,19 +21,11 @@ export default async function HomePage({
 
   // カテゴリ指定時は従来のグリッド表示
   if (category) {
-    const [categories, posts, upcomingEvents, announcements] =
-      await Promise.all([
-        getCategories(),
-        getPosts({ categorySlug: category }),
-        getUpcomingEvents(),
-        getPinnedAnnouncements(),
-      ]);
-
-    const postIds = posts.map((p) => p.id);
-    const reactionsMap =
-      postIds.length > 0
-        ? await getReactionsForPosts(postIds)
-        : new Map();
+    const [posts, upcomingEvents, announcements] = await Promise.all([
+      getPosts({ categorySlug: category }),
+      getUpcomingEvents(),
+      getPinnedAnnouncements(),
+    ]);
 
     return (
       <>
@@ -48,19 +39,12 @@ export default async function HomePage({
   }
 
   // カテゴリ未指定: セクション分割表示
-  const [categories, posts, upcomingEvents, announcements] =
-    await Promise.all([
-      getCategories(),
-      getRecentPostsByCategory(),
-      getUpcomingEvents(),
-      getPinnedAnnouncements(),
-    ]);
-
-  const postIds = posts.map((p) => p.id);
-  const reactionsMap =
-    postIds.length > 0
-      ? await getReactionsForPosts(postIds)
-      : new Map();
+  const [categories, posts, upcomingEvents, announcements] = await Promise.all([
+    getCategories(),
+    getRecentPostsByCategory(),
+    getUpcomingEvents(),
+    getPinnedAnnouncements(),
+  ]);
 
   // カテゴリ別にグルーピング
   const postsByCategory = new Map<number, typeof posts>();
@@ -78,7 +62,7 @@ export default async function HomePage({
       <AnnouncementBanner announcements={announcements} />
       <EventBanner events={upcomingEvents} />
 
-      <div className="space-y-2">
+      <div className="space-y-8">
         {categories
           .filter((cat) => postsByCategory.has(cat.id))
           .map((cat) => (
@@ -86,7 +70,6 @@ export default async function HomePage({
               key={cat.id}
               category={cat}
               posts={postsByCategory.get(cat.id)!}
-              reactionsMap={reactionsMap}
             />
           ))}
       </div>
@@ -99,7 +82,7 @@ function MobilePostButton() {
     <div className="mb-4 flex items-center justify-end lg:hidden">
       <Link
         href="/posts/new"
-        className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md "
+        className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md"
       >
         <PenSquare size={16} />
         投稿する
@@ -112,16 +95,16 @@ function DigestBanner() {
   return (
     <Link
       href="/digest"
-      className="mb-4 flex items-center gap-2.5 rounded-xl border border-accent/20 bg-accent/5 px-4 py-3 transition-all hover:bg-accent/10"
+      className="mb-4 flex items-center gap-2.5 rounded-xl border border-border bg-gray-50 px-4 py-3 transition-all hover:bg-gray-100"
     >
-      <BarChart3 size={18} className="text-accent" />
+      <BarChart3 size={18} className="text-gray-500" />
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium text-gray-900">
           ウィークリーダイジェスト
         </p>
         <p className="text-xs text-muted">今週のコミュニティ活動まとめ</p>
       </div>
-      <span className="text-xs font-medium text-accent">見る &rarr;</span>
+      <span className="text-xs font-medium text-gray-500">見る &rarr;</span>
     </Link>
   );
 }
