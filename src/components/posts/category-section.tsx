@@ -17,13 +17,12 @@ export function CategorySection({
   reactionsMap: Map<string, ReactionCount[]>;
 }) {
   return (
-    <section className="rounded-2xl border border-border bg-white p-4">
+    <section className="p-4">
       {/* カテゴリ見出し */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-1.5 rounded-full bg-gray-300" />
-          <span className="text-lg">{category.icon_emoji}</span>
-          <h2 className="text-base font-bold text-gray-900">
+          <span className="text-xl">{category.icon_emoji}</span>
+          <h2 className="text-xl font-bold text-gray-900">
             {category.name}
           </h2>
           <span className="text-xs text-muted">({posts.length})</span>
