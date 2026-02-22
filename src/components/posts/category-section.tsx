@@ -67,7 +67,7 @@ function FeedItem({
   return (
     <Link
       href={`/posts/${post.id}`}
-      className="block rounded-xl bg-white p-3.5 transition-all hover:shadow-md"
+      className="block rounded-xl border border-border bg-white p-3.5 transition-all hover:shadow-md"
     >
       {/* ヘッダー: アバター + 名前 + 時刻 */}
       <div className="mb-2 flex items-center gap-2">
