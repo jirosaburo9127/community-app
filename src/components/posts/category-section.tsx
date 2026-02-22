@@ -45,7 +45,7 @@ export function CategorySection({
   );
 }
 
-function HorizontalCard({ post }: { post: Post }) {
+export function HorizontalCard({ post }: { post: Post }) {
   const timeAgo = formatDistanceToNow(new Date(post.created_at), {
     addSuffix: true,
     locale: ja,

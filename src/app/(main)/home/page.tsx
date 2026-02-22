@@ -1,15 +1,17 @@
 import { AnnouncementBanner } from "@/components/posts/announcement-banner";
-import { CategorySection } from "@/components/posts/category-section";
+import { CategorySection, HorizontalCard } from "@/components/posts/category-section";
 import { EventBanner } from "@/components/posts/event-banner";
 import { PostGrid } from "@/components/posts/post-grid";
 import { getCategories } from "@/lib/queries/categories";
 import {
+  getFeaturedPosts,
   getPinnedAnnouncements,
   getPosts,
   getRecentPostsByCategory,
 } from "@/lib/queries/posts";
 import { getUpcomingEvents } from "@/lib/queries/events";
-import { BarChart3, PenSquare } from "lucide-react";
+import type { Post } from "@/lib/types";
+import { BarChart3, ChevronRight, PenSquare } from "lucide-react";
 import Link from "next/link";
 
 export default async function HomePage({
@@ -39,9 +41,10 @@ export default async function HomePage({
   }
 
   // カテゴリ未指定: セクション分割表示
-  const [categories, posts, upcomingEvents, announcements] = await Promise.all([
+  const [categories, posts, featuredPosts, upcomingEvents, announcements] = await Promise.all([
     getCategories(),
     getRecentPostsByCategory(),
+    getFeaturedPosts(),
     getUpcomingEvents(),
     getPinnedAnnouncements(),
   ]);
@@ -63,6 +66,11 @@ export default async function HomePage({
       <EventBanner events={upcomingEvents} />
 
       <div className="space-y-8">
+        {/* 今日の注目投稿 */}
+        {featuredPosts.length > 0 && (
+          <FeaturedSection posts={featuredPosts} />
+        )}
+
         {[...categories]
           .sort((a, b) => {
             // スタートアップニュースを最後に
@@ -94,6 +102,24 @@ function MobilePostButton() {
         投稿する
       </Link>
     </div>
+  );
+}
+
+function FeaturedSection({ posts }: { posts: Post[] }) {
+  return (
+    <section>
+      <div className="mb-3 inline-flex items-center gap-1">
+        <h2 className="text-lg font-bold text-gray-900">
+          今日の注目投稿
+        </h2>
+        <ChevronRight size={20} className="text-gray-400" />
+      </div>
+      <div className="scrollbar-hide -mx-4 flex gap-4 overflow-x-auto px-4 pb-2">
+        {posts.map((post) => (
+          <HorizontalCard key={post.id} post={post} />
+        ))}
+      </div>
+    </section>
   );
 }
 

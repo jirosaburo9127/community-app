@@ -99,6 +99,29 @@ export async function getRecentPostsByCategory(limit = 50) {
   return data;
 }
 
+export async function getFeaturedPosts(limit = 10) {
+  const supabase = await createClient();
+
+  // 直近7日間でいいね+コメントが多い投稿
+  const since = new Date();
+  since.setDate(since.getDate() - 7);
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*, profiles(*), categories(*)")
+    .is("group_id", null)
+    .gte("created_at", since.toISOString())
+    .order("like_count", { ascending: false })
+    .order("comment_count", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Failed to fetch featured posts:", error.message);
+    return [];
+  }
+  return data;
+}
+
 export async function getPost(id: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
