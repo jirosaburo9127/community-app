@@ -3,6 +3,8 @@ import { createTTLCache } from "@/lib/cache";
 import { POSTS_PER_PAGE } from "@/lib/constants";
 import { getCategories } from "./categories";
 
+const POST_LIST_SELECT = "*, profiles(*), categories(*)";
+
 // カテゴリslug→idのマッピング（キャッシュ済みカテゴリを利用）
 async function getCategoryIdBySlug(slug: string): Promise<number | null> {
   const categories = await getCategories();
@@ -21,7 +23,7 @@ export async function getPosts({
 
   let query = supabase
     .from("posts")
-    .select("*, profiles(*), categories(*)")
+    .select(POST_LIST_SELECT)
     .is("group_id", null)
     .order("created_at", { ascending: false })
     .limit(POSTS_PER_PAGE);
@@ -52,7 +54,7 @@ export async function getEventPosts(limit = 5) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("*, profiles(*), categories(*)")
+    .select(POST_LIST_SELECT)
     .eq("category_id", categoryId)
     .is("group_id", null)
     .order("created_at", { ascending: false })
@@ -82,15 +84,15 @@ async function fetchPinnedAnnouncements() {
 
 export const getPinnedAnnouncements = createTTLCache(fetchPinnedAnnouncements, 60_000);
 
-export async function getRecentPostsByCategory(limit = 50) {
+async function fetchRecentPostsByCategory() {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("posts")
-    .select("*, profiles(*), categories(*)")
+    .select(POST_LIST_SELECT)
     .is("group_id", null)
     .order("created_at", { ascending: false })
-    .limit(limit);
+    .limit(50);
 
   if (error) {
     console.error("Failed to fetch recent posts:", error.message);
@@ -99,7 +101,9 @@ export async function getRecentPostsByCategory(limit = 50) {
   return data;
 }
 
-export async function getFeaturedPosts(limit = 10) {
+export const getRecentPostsByCategory = createTTLCache(fetchRecentPostsByCategory, 30_000);
+
+async function fetchFeaturedPosts() {
   const supabase = await createClient();
 
   // 直近7日間でいいね+コメントが多い投稿
@@ -108,12 +112,12 @@ export async function getFeaturedPosts(limit = 10) {
 
   const { data, error } = await supabase
     .from("posts")
-    .select("*, profiles(*), categories(*)")
+    .select(POST_LIST_SELECT)
     .is("group_id", null)
     .gte("created_at", since.toISOString())
     .order("like_count", { ascending: false })
     .order("comment_count", { ascending: false })
-    .limit(limit);
+    .limit(10);
 
   if (error) {
     console.error("Failed to fetch featured posts:", error.message);
@@ -121,6 +125,8 @@ export async function getFeaturedPosts(limit = 10) {
   }
   return data;
 }
+
+export const getFeaturedPosts = createTTLCache(fetchFeaturedPosts, 60_000);
 
 export async function getPost(id: string) {
   const supabase = await createClient();

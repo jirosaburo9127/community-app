@@ -47,8 +47,20 @@ export function UnreadCountProvider({
 
   useEffect(() => {
     fetchCounts();
-    const interval = setInterval(fetchCounts, 30_000);
-    return () => clearInterval(interval);
+    const interval = setInterval(fetchCounts, 60_000);
+
+    // タブ非表示時はポーリング停止
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        fetchCounts();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
   }, [fetchCounts]);
 
   return (

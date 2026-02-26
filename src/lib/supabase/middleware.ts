@@ -58,17 +58,24 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // ユーザーIDをヘッダーで下流に渡す（layout等でgetUser()の二重呼び出しを回避）
+  if (user) {
+    supabaseResponse.headers.set("x-user-id", user.id);
+  }
+
   // admin/onboarding チェック
   if (user && !isAuthPage) {
     const needsAdminCheck = pathname.startsWith("/admin");
     const onboardingCached = request.cookies.get("onboarding_completed")?.value === "1";
     const needsOnboardingCheck = !onboardingCached && !pathname.startsWith("/onboarding") && !pathname.startsWith("/api");
 
-    // DBクエリはadminチェックまたはオンボーディング未確認時のみ
-    if (needsAdminCheck || needsOnboardingCheck) {
+    const displayNameCached = request.cookies.has("display_name");
+
+    // DBクエリはadminチェック、オンボーディング未確認、またはdisplayName未キャッシュ時のみ
+    if (needsAdminCheck || needsOnboardingCheck || !displayNameCached) {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("is_admin, onboarding_completed")
+        .select("is_admin, onboarding_completed, display_name")
         .eq("id", user.id)
         .single();
 
@@ -91,6 +98,16 @@ export async function updateSession(request: NextRequest) {
         supabaseResponse.cookies.set("onboarding_completed", "1", {
           path: "/",
           maxAge: 86400,
+          httpOnly: true,
+          sameSite: "lax",
+        });
+      }
+
+      // displayNameをCookieにキャッシュ（1時間）
+      if (profile?.display_name && !displayNameCached) {
+        supabaseResponse.cookies.set("display_name", profile.display_name, {
+          path: "/",
+          maxAge: 3600,
           httpOnly: true,
           sameSite: "lax",
         });

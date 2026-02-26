@@ -5,25 +5,30 @@ import { UnreadCountProvider } from "@/components/layout/unread-count-provider";
 import { createClient } from "@/lib/supabase/server";
 import { getCategories } from "@/lib/queries/categories";
 import { Suspense } from "react";
+import { cookies, headers } from "next/headers";
 
 export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-
-  const [{ data: { user } }, categories] = await Promise.all([
-    supabase.auth.getUser(),
+  const [headerStore, cookieStore, categories] = await Promise.all([
+    headers(),
+    cookies(),
     getCategories(),
   ]);
 
-  let displayName: string | undefined;
-  if (user) {
+  // ミドルウェアからユーザーID取得（getUser()の二重呼び出し回避）
+  const userId = headerStore.get("x-user-id");
+
+  // displayNameはCookieキャッシュを優先、なければDB問い合わせ
+  let displayName = cookieStore.get("display_name")?.value;
+  if (!displayName && userId) {
+    const supabase = await createClient();
     const { data: profile } = await supabase
       .from("profiles")
       .select("display_name")
-      .eq("id", user.id)
+      .eq("id", userId)
       .maybeSingle();
     displayName = profile?.display_name ?? undefined;
   }
