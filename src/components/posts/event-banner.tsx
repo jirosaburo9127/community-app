@@ -39,6 +39,7 @@ export function EventBanner({ events }: { events: Event[] }) {
                 src={featured.image_url}
                 alt={featured.title}
                 fill
+                priority
                 className="object-cover transition-transform group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 66vw"
               />

@@ -22,8 +22,8 @@ const activityConfig = {
   },
 } as const;
 
-export async function ActivityTimeline({ userId }: { userId: string }) {
-  const activities = await getActivity(userId);
+export async function ActivityTimeline({ userId, activities: prefetched }: { userId?: string; activities?: Awaited<ReturnType<typeof getActivity>> }) {
+  const activities = prefetched ?? (userId ? await getActivity(userId) : []);
 
   if (activities.length === 0) {
     return (

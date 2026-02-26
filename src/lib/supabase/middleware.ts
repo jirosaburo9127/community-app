@@ -58,11 +58,13 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // admin/onboarding チェックが必要なルートのみprofileクエリを実行
+  // admin/onboarding チェック
   if (user && !isAuthPage) {
     const needsAdminCheck = pathname.startsWith("/admin");
-    const needsOnboardingCheck = !pathname.startsWith("/onboarding") && !pathname.startsWith("/api");
+    const onboardingCached = request.cookies.get("onboarding_completed")?.value === "1";
+    const needsOnboardingCheck = !onboardingCached && !pathname.startsWith("/onboarding") && !pathname.startsWith("/api");
 
+    // DBクエリはadminチェックまたはオンボーディング未確認時のみ
     if (needsAdminCheck || needsOnboardingCheck) {
       const { data: profile } = await supabase
         .from("profiles")
@@ -84,6 +86,15 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url);
       }
 
+      // オンボーディング完了済みをCookieにキャッシュ（24時間）
+      if (profile?.onboarding_completed && !onboardingCached) {
+        supabaseResponse.cookies.set("onboarding_completed", "1", {
+          path: "/",
+          maxAge: 86400,
+          httpOnly: true,
+          sameSite: "lax",
+        });
+      }
     }
   }
 

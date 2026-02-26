@@ -1,5 +1,6 @@
 import { getMyProfile } from "@/lib/queries/profile";
 import { getUserBadges } from "@/lib/queries/badges";
+import { getActivity } from "@/lib/queries/activity";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/lib/actions/auth";
 import { ActivityTimeline } from "@/components/profile/activity-timeline";
@@ -43,13 +44,16 @@ export default async function ProfilePage() {
 
   const supabase = await createClient();
 
-  const badges = await getUserBadges(profile.id);
-
+  // 全クエリを並列実行
   const [
+    badges,
+    activities,
     { count: postCount },
     { count: commentCount },
     { data: upcomingEvents },
   ] = await Promise.all([
+    getUserBadges(profile.id),
+    getActivity(profile.id),
     supabase
       .from("posts")
       .select("*", { count: "exact", head: true })
@@ -92,6 +96,7 @@ export default async function ProfilePage() {
                 alt={profile.display_name}
                 width={88}
                 height={88}
+                priority
                 className="h-22 w-22 rounded-full border-4 border-white object-cover shadow-md"
               />
             ) : (
@@ -239,7 +244,7 @@ export default async function ProfilePage() {
       )}
 
       {/* Activity timeline */}
-      <ActivityTimeline userId={profile.id} />
+      <ActivityTimeline activities={activities} />
     </div>
   );
 }

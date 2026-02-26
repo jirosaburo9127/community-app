@@ -27,20 +27,20 @@ CREATE POLICY "user_badges_select" ON user_badges FOR SELECT USING (true);
 
 -- 14バッジ定義
 INSERT INTO badge_definitions (id, name, description, icon_emoji, sort_order) VALUES
-  ('first_post',       '初投稿',           '初めての投稿を作成',           '&#x1F4DD;', 1),
-  ('first_comment',    '初コメント',        '初めてのコメント',             '&#x1F4AC;', 2),
-  ('first_reaction',   '初リアクション',     '初めてリアクションを受けた',     '&#x2764;&#xFE0F;', 3),
-  ('post_10',          '投稿マスター',       '投稿10件達成',               '&#x1F3AF;', 4),
-  ('comment_10',       'コメントマスター',    'コメント10件達成',            '&#x1F5E3;&#xFE0F;', 5),
-  ('points_100',       '100ポイント',        '100ポイント達成',             '&#x1F4AF;', 6),
-  ('points_500',       '500ポイント',        '500ポイント達成',             '&#x1F525;', 7),
-  ('startup_creator',  'スタートアップ創設',  'スタートアップを登録',          '&#x1F680;', 8),
-  ('event_organizer',  'イベント主催者',      'イベントを作成',              '&#x1F389;', 9),
-  ('event_5',          'イベント常連',        'イベント5回参加',             '&#x1F3C3;', 10),
-  ('course_completed', '学習完了',           'コースを1つ完了',             '&#x1F393;', 11),
-  ('group_creator',    'グループ作成者',      'グループを作成',              '&#x1F465;', 12),
-  ('mentor_registered','メンター登録',        'メンターとして登録',           '&#x1F9D1;&#x200D;&#x1F3EB;', 13),
-  ('resource_shared',  'ナレッジ共有者',      'リソースを共有',              '&#x1F4DA;', 14);
+  ('first_post',       '初投稿',           '初めての投稿を作成',           '📝', 1),
+  ('first_comment',    '初コメント',        '初めてのコメント',             '💬', 2),
+  ('first_reaction',   '初リアクション',     '初めてリアクションを受けた',     '❤️', 3),
+  ('post_10',          '投稿マスター',       '投稿10件達成',               '🎯', 4),
+  ('comment_10',       'コメントマスター',    'コメント10件達成',            '🗣️', 5),
+  ('points_100',       '100ポイント',        '100ポイント達成',             '💯', 6),
+  ('points_500',       '500ポイント',        '500ポイント達成',             '🔥', 7),
+  ('startup_creator',  'スタートアップ創設',  'スタートアップを登録',          '🚀', 8),
+  ('event_organizer',  'イベント主催者',      'イベントを作成',              '🎉', 9),
+  ('event_5',          'イベント常連',        'イベント5回参加',             '🏃', 10),
+  ('course_completed', '学習完了',           'コースを1つ完了',             '🎓', 11),
+  ('group_creator',    'グループ作成者',      'グループを作成',              '👥', 12),
+  ('mentor_registered','メンター登録',        'メンターとして登録',           '🧑‍🏫', 13),
+  ('resource_shared',  'ナレッジ共有者',      'リソースを共有',              '📚', 14);
 
 -- バッジ自動付与関数
 CREATE OR REPLACE FUNCTION check_and_award_badges()

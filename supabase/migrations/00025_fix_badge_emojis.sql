@@ -1,0 +1,15 @@
+-- Fix badge emojis: HTML entities → real Unicode emoji
+UPDATE badge_definitions SET icon_emoji = '📝' WHERE id = 'first_post';
+UPDATE badge_definitions SET icon_emoji = '💬' WHERE id = 'first_comment';
+UPDATE badge_definitions SET icon_emoji = '❤️' WHERE id = 'first_reaction';
+UPDATE badge_definitions SET icon_emoji = '🎯' WHERE id = 'post_10';
+UPDATE badge_definitions SET icon_emoji = '🗣️' WHERE id = 'comment_10';
+UPDATE badge_definitions SET icon_emoji = '💯' WHERE id = 'points_100';
+UPDATE badge_definitions SET icon_emoji = '🔥' WHERE id = 'points_500';
+UPDATE badge_definitions SET icon_emoji = '🚀' WHERE id = 'startup_creator';
+UPDATE badge_definitions SET icon_emoji = '🎉' WHERE id = 'event_organizer';
+UPDATE badge_definitions SET icon_emoji = '🏃' WHERE id = 'event_5';
+UPDATE badge_definitions SET icon_emoji = '🎓' WHERE id = 'course_completed';
+UPDATE badge_definitions SET icon_emoji = '👥' WHERE id = 'group_creator';
+UPDATE badge_definitions SET icon_emoji = '🧑‍🏫' WHERE id = 'mentor_registered';
+UPDATE badge_definitions SET icon_emoji = '📚' WHERE id = 'resource_shared';
