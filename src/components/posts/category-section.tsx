@@ -19,6 +19,7 @@ export function CategorySection({
       {/* カテゴリ見出し */}
       <Link
         href={`/home?category=${category.slug}`}
+        prefetch={false}
         className="mb-3 inline-flex items-center gap-1 hover:opacity-70 transition-opacity"
       >
         <h2 className="text-lg font-bold text-gray-900">
@@ -35,6 +36,7 @@ export function CategorySection({
         {posts.length >= SHOW_MORE_THRESHOLD && (
           <Link
             href={`/home?category=${category.slug}`}
+            prefetch={false}
             className="flex w-36 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-900"
           >
             もっとみる

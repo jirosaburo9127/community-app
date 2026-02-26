@@ -92,7 +92,7 @@ async function fetchRecentPostsByCategory() {
     .select(POST_LIST_SELECT)
     .is("group_id", null)
     .order("created_at", { ascending: false })
-    .limit(50);
+    .limit(25);
 
   if (error) {
     console.error("Failed to fetch recent posts:", error.message);

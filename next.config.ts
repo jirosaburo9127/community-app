@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    // バンドル最適化: tree-shakingを強化
+    optimizePackageImports: ["lucide-react", "date-fns"],
+  },
 };
 
 export default nextConfig;

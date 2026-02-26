@@ -35,14 +35,9 @@ export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/auth");
 
-  // セッション更新 + ユーザー取得（1回のみ）
-  let user = null;
-  try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
-  } catch {
-    // ignore
-  }
+  // セッション取得（JWTをローカル解析、ネットワーク不要で高速）
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   // 未ログイン → ログインページへ
   if (!user && !isAuthPage) {
