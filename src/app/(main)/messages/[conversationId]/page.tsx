@@ -43,7 +43,7 @@ export default async function ConversationPage({
   const messages = await getMessages(conversationId);
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-8rem)] max-w-2xl flex-col rounded-xl border border-border bg-white overflow-hidden">
+    <div className="mx-auto flex h-[calc(100dvh-10rem)] max-w-2xl flex-col rounded-xl border border-border bg-white overflow-hidden lg:h-[calc(100dvh-7rem)]">
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-border px-4 py-3">
         <Link

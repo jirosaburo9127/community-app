@@ -18,11 +18,17 @@ export function MessageThread({
   initialMessages: DirectMessage[];
 }) {
   const [messages, setMessages] = useState<DirectMessage[]>(initialMessages);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to bottom on new messages
+  // Scroll to bottom only when content overflows
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = scrollAreaRef.current;
+    if (!el) return;
+    // Only scroll if content exceeds visible area
+    if (el.scrollHeight > el.clientHeight) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   // Mark unread messages as read
@@ -103,7 +109,7 @@ export function MessageThread({
   return (
     <div className="flex h-full flex-col">
       {/* Messages */}
-      <div className="flex-1 space-y-3 overflow-y-auto p-4">
+      <div ref={scrollAreaRef} className="flex-1 space-y-3 overflow-y-auto p-4">
         {messages.map((msg) => {
           const isMine = msg.sender_id === currentUserId;
           const timeAgo = formatDistanceToNow(new Date(msg.created_at), {
