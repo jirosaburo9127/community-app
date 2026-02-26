@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/static";
 import { createTTLCache } from "@/lib/cache";
 import { POSTS_PER_PAGE } from "@/lib/constants";
 import { getCategories } from "./categories";
@@ -68,7 +69,7 @@ async function fetchPinnedAnnouncements() {
   const categoryId = await getCategoryIdBySlug("management");
   if (!categoryId) return [];
 
-  const supabase = await createClient();
+  const supabase = createStaticClient();
   const { data, error } = await supabase
     .from("posts")
     .select("id, title")
@@ -85,7 +86,7 @@ async function fetchPinnedAnnouncements() {
 export const getPinnedAnnouncements = createTTLCache(fetchPinnedAnnouncements, 60_000);
 
 async function fetchRecentPostsByCategory() {
-  const supabase = await createClient();
+  const supabase = createStaticClient();
 
   const { data, error } = await supabase
     .from("posts")
@@ -104,7 +105,7 @@ async function fetchRecentPostsByCategory() {
 export const getRecentPostsByCategory = createTTLCache(fetchRecentPostsByCategory, 30_000);
 
 async function fetchFeaturedPosts() {
-  const supabase = await createClient();
+  const supabase = createStaticClient();
 
   // 直近7日間でいいね+コメントが多い投稿
   const since = new Date();

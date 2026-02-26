@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/static";
 import { createTTLCache } from "@/lib/cache";
 
 export async function getEvents({
@@ -30,7 +31,7 @@ export async function getEvents({
 }
 
 async function fetchUpcomingEvents() {
-  const supabase = await createClient();
+  const supabase = createStaticClient();
   const now = new Date().toISOString();
 
   const { data, error } = await supabase

@@ -1,8 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/static";
 import { createTTLCache } from "@/lib/cache";
 
 async function fetchCategories() {
-  const supabase = await createClient();
+  const supabase = createStaticClient();
   const { data, error } = await supabase
     .from("categories")
     .select("*")
