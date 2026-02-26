@@ -51,7 +51,7 @@ export default async function GroupDetailPage({
       <div className="overflow-hidden rounded-xl border border-border bg-white">
         <div className="h-16 bg-primary" />
         <div className="px-6 pb-6">
-          <div className="flex items-end gap-4 -mt-8">
+          <div className="-mt-8">
             {group.avatar_url ? (
               <Image
                 src={group.avatar_url}
@@ -65,12 +65,12 @@ export default async function GroupDetailPage({
                 {group.name.charAt(0)}
               </div>
             )}
-            <div className="mb-1">
-              <h2 className="text-lg font-bold text-gray-900">{group.name}</h2>
-              <div className="flex items-center gap-1 mt-0.5 text-xs text-muted">
-                <UsersRound size={12} />
-                <span>{members.length} メンバー</span>
-              </div>
+          </div>
+          <div className="mt-3">
+            <h2 className="text-lg font-bold text-gray-900">{group.name}</h2>
+            <div className="flex items-center gap-1 mt-0.5 text-xs text-muted">
+              <UsersRound size={12} />
+              <span>{members.length} メンバー</span>
             </div>
           </div>
 

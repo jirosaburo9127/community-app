@@ -2,6 +2,7 @@ import { AnnouncementBanner } from "@/components/posts/announcement-banner";
 import { CategorySection, HorizontalCard } from "@/components/posts/category-section";
 import { EventBanner } from "@/components/posts/event-banner";
 import { PostGrid } from "@/components/posts/post-grid";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getCategories } from "@/lib/queries/categories";
 import {
   getFeaturedPosts,
@@ -13,6 +14,28 @@ import { getUpcomingEvents } from "@/lib/queries/events";
 import type { Post } from "@/lib/types";
 import { BarChart3, ChevronRight, PenSquare } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+
+function FeedSkeleton() {
+  return (
+    <div className="space-y-6">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i}>
+          <Skeleton className="mb-3 h-6 w-32" />
+          <div className="flex gap-4 overflow-hidden">
+            {Array.from({ length: 4 }).map((_, j) => (
+              <div key={j} className="w-44 shrink-0 rounded-lg border border-gray-100 bg-white p-2.5">
+                <Skeleton className="mb-2 aspect-[4/3] w-full rounded" />
+                <Skeleton className="mb-1 h-4 w-full" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default async function HomePage({
   searchParams,
@@ -21,26 +44,38 @@ export default async function HomePage({
 }) {
   const { category } = await searchParams;
 
-  // カテゴリ指定時は従来のグリッド表示
-  if (category) {
-    const [posts, upcomingEvents, announcements] = await Promise.all([
-      getPosts({ categorySlug: category }),
-      getUpcomingEvents(),
-      getPinnedAnnouncements(),
-    ]);
+  return (
+    <>
+      <MobilePostButton />
+      <DigestBanner />
+      <Suspense fallback={<FeedSkeleton />}>
+        {category ? (
+          <CategoryFeed category={category} />
+        ) : (
+          <HomeFeed />
+        )}
+      </Suspense>
+    </>
+  );
+}
 
-    return (
-      <>
-        <MobilePostButton />
-        <DigestBanner />
-        <AnnouncementBanner announcements={announcements} />
-        <EventBanner events={upcomingEvents} />
-        <PostGrid posts={posts} />
-      </>
-    );
-  }
+async function CategoryFeed({ category }: { category: string }) {
+  const [posts, upcomingEvents, announcements] = await Promise.all([
+    getPosts({ categorySlug: category }),
+    getUpcomingEvents(),
+    getPinnedAnnouncements(),
+  ]);
 
-  // カテゴリ未指定: セクション分割表示
+  return (
+    <>
+      <AnnouncementBanner announcements={announcements} />
+      <EventBanner events={upcomingEvents} />
+      <PostGrid posts={posts} />
+    </>
+  );
+}
+
+async function HomeFeed() {
   const [categories, posts, featuredPosts, upcomingEvents, announcements] = await Promise.all([
     getCategories(),
     getRecentPostsByCategory(),
@@ -49,7 +84,6 @@ export default async function HomePage({
     getPinnedAnnouncements(),
   ]);
 
-  // カテゴリ別にグルーピング
   const postsByCategory = new Map<number, typeof posts>();
   for (const post of posts) {
     if (!post.category_id) continue;
@@ -60,20 +94,16 @@ export default async function HomePage({
 
   return (
     <>
-      <MobilePostButton />
-      <DigestBanner />
       <AnnouncementBanner announcements={announcements} />
       <EventBanner events={upcomingEvents} />
 
       <div className="space-y-8">
-        {/* 今日の注目投稿 */}
         {featuredPosts.length > 0 && (
           <FeaturedSection posts={featuredPosts} />
         )}
 
         {[...categories]
           .sort((a, b) => {
-            // スタートアップニュースを最後に
             if (a.slug === "startup-news") return 1;
             if (b.slug === "startup-news") return -1;
             return 0;
