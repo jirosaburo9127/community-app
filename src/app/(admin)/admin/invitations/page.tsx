@@ -34,9 +34,10 @@ export default function AdminInvitationsPage() {
 
   const generateCode = () => {
     const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+    const values = crypto.getRandomValues(new Uint32Array(12));
     let code = "";
-    for (let i = 0; i < 8; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
+    for (let i = 0; i < 12; i++) {
+      code += chars[values[i] % chars.length];
     }
     return code;
   };

@@ -1,8 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 
+function escapeIlike(input: string): string {
+  return input.replace(/[\\%_]/g, (ch) => `\\${ch}`);
+}
+
 export async function searchPosts(q: string) {
   const supabase = await createClient();
-  const pattern = `%${q}%`;
+  const escaped = escapeIlike(q);
+  const pattern = `%${escaped}%`;
 
   const { data, error } = await supabase
     .from("posts")
@@ -21,7 +26,8 @@ export async function searchPosts(q: string) {
 
 export async function searchMembers(q: string) {
   const supabase = await createClient();
-  const pattern = `%${q}%`;
+  const escaped = escapeIlike(q);
+  const pattern = `%${escaped}%`;
 
   const { data, error } = await supabase
     .from("profiles")

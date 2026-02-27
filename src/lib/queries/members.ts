@@ -1,6 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import type { ProfileRole } from "@/lib/types";
 
+function escapeIlike(input: string): string {
+  return input.replace(/[\\%_]/g, (ch) => `\\${ch}`);
+}
+
 export async function getMembers({
   role,
   search,
@@ -20,8 +24,9 @@ export async function getMembers({
   }
 
   if (search) {
+    const escaped = escapeIlike(search);
     query = query.or(
-      `display_name.ilike.%${search}%,company.ilike.%${search}%`
+      `display_name.ilike.%${escaped}%,company.ilike.%${escaped}%`
     );
   }
 

@@ -19,10 +19,19 @@ export async function updateProfile(formData: FormData) {
   }
 
   // Handle avatar upload
+  const ALLOWED_IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
+  const MAX_AVATAR_SIZE = 2 * 1024 * 1024; // 2MB
+
   let avatarUrl: string | undefined;
   const avatar = formData.get("avatar") as File | null;
   if (avatar && avatar.size > 0) {
-    const ext = avatar.name.split(".").pop();
+    if (avatar.size > MAX_AVATAR_SIZE) {
+      return { error: "アバター画像は2MB以下にしてください" };
+    }
+    const ext = avatar.name.split(".").pop()?.toLowerCase();
+    if (!ext || !ALLOWED_IMAGE_EXTENSIONS.includes(ext)) {
+      return { error: "許可されている画像形式: JPG, PNG, WebP, GIF" };
+    }
     const path = `${user.id}/${Date.now()}.${ext}`;
     const { error: uploadError } = await supabase.storage
       .from("avatars")

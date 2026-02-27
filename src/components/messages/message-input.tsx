@@ -2,7 +2,10 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { Send } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
+
+const MESSAGE_RATE_LIMIT = 30;
+const MESSAGE_RATE_WINDOW = 60 * 1000; // 1 minute
 
 export function MessageInput({
   conversationId,
@@ -15,11 +18,23 @@ export function MessageInput({
 }) {
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
+  const sendTimestamps = useRef<number[]>([]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const text = body.trim();
     if (!text || sending) return;
+
+    // Client-side rate limiting
+    const now = Date.now();
+    sendTimestamps.current = sendTimestamps.current.filter(
+      (t) => now - t < MESSAGE_RATE_WINDOW
+    );
+    if (sendTimestamps.current.length >= MESSAGE_RATE_LIMIT) {
+      alert("メッセージの送信頻度が高すぎます。少し待ってからお試しください");
+      return;
+    }
+    sendTimestamps.current.push(now);
 
     setSending(true);
     setBody("");

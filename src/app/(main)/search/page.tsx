@@ -5,6 +5,8 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import { headers } from "next/headers";
+import { rateLimit } from "@/lib/rate-limit";
 
 const roleLabels: Record<string, string> = {
   student: "学生",
@@ -29,12 +31,25 @@ export default async function SearchPage({
 
   let posts: any[] = [];
   let members: any[] = [];
+  let rateLimited = false;
 
   if (q) {
-    [posts, members] = await Promise.all([
-      searchPosts(q),
-      searchMembers(q),
-    ]);
+    const hdrs = await headers();
+    const ip = hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const { success } = rateLimit({
+      key: `search:${ip}`,
+      limit: 20,
+      windowMs: 60 * 1000, // 20 searches per minute
+    });
+
+    if (!success) {
+      rateLimited = true;
+    } else {
+      [posts, members] = await Promise.all([
+        searchPosts(q),
+        searchMembers(q),
+      ]);
+    }
   }
 
   const totalResults = posts.length + members.length;
@@ -48,7 +63,14 @@ export default async function SearchPage({
         </Suspense>
       </div>
 
-      {q ? (
+      {rateLimited ? (
+        <div className="flex flex-col items-center py-12 text-center">
+          <Search size={48} className="mb-3 text-gray-300" />
+          <p className="text-sm text-muted">
+            検索回数の上限に達しました。しばらくしてからお試しください
+          </p>
+        </div>
+      ) : q ? (
         <>
           <p className="mb-4 text-sm text-muted">
             「{q}」の検索結果: {totalResults}件
